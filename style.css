@@ -1,64 +1,122 @@
-/* Reset & basic */
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: Arial, sans-serif; line-height:1.6; background:#f4f4f9; color:#333; transition:0.3s; }
-body.dark-mode { background:#121212; color:#f0f0f0; }
-html { scroll-behavior: smooth; }
-
-/* Navigation */
-nav { background:#1e90ff; padding:1rem; position:sticky; top:0; z-index:100; }
-body.dark-mode nav { background:#222; }
-nav ul { display:flex; justify-content:center; list-style:none; }
-nav ul li { margin:0 1rem; }
-nav ul li a { color:white; text-decoration:none; font-weight:bold; transition:0.3s; }
-nav ul li a:hover { color:#ffdd59; }
-
-/* Dark/Light Toggle */
-.mode-toggle { position:fixed; top:1rem; right:1rem; z-index:200; }
-.mode-toggle button { background:#ffdd59; border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer; font-size:1.2rem; transition:0.3s; }
-.mode-toggle button:hover { transform:scale(1.1); }
-
-/* Header */
-header { background:linear-gradient(to right,#1e90ff,#00c6ff); color:white; text-align:center; padding:4rem 2rem; transition:0.3s; }
-body.dark-mode header { background:linear-gradient(to right,#222,#555); }
-header h1 { font-size:3rem; margin-bottom:1rem; }
-
-/* Sections */
-section { padding:3rem 2rem; max-width:1000px; margin:auto; transition:0.3s; }
-section h2 { color:#1e90ff; margin-bottom:1rem; }
-body.dark-mode section h2 { color:#ffdd59; }
-.profile-img { width:150px; border-radius:50%; margin-top:1rem; display:block; }
-
-/* Projects */
-#project-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem; }
-.project-card { background:white; padding:1.5rem; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.1); transition:0.3s; }
-body.dark-mode .project-card { background:#1e1e1e; }
-.project-card:hover { transform:translateY(-10px); box-shadow:0 10px 25px rgba(0,0,0,0.2); }
-.project-card h3 { color:#1e90ff; margin-bottom:0.5rem; }
-body.dark-mode .project-card h3 { color:#ffdd59; }
-.project-card p a { color:#ff7f50; text-decoration:none; }
-.project-card p a:hover { text-decoration:underline; }
-
-/* Footer */
-footer { text-align:center; padding:1rem; background:#1e90ff; color:white; margin-top:2rem; }
-body.dark-mode footer { background:#222; }
-
-/* Snake Game Container */
-#snake-container {
-    position:fixed; bottom:20px; right:20px;
-    width:220px; background:rgba(0,0,0,0.8); border-radius:10px;
-    z-index:300; cursor:move; user-select:none;
-    display:flex; flex-direction:column;
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
-#snake-header { display:flex; justify-content:space-between; background:#333; color:white; padding:5px; border-radius:10px 10px 0 0; cursor:grab; }
-#snake-header span { cursor:pointer; margin-left:5px; }
-#snake-game { background:#111; display:block; margin:0 auto; border:2px solid #fff; }
+header {
+    text-align: center;
+    padding: 2rem;
+    background-color: #222;
+    color: #fff;
+}
 
-/* Minimized snake */
-#snake-container.minimized { height:40px; width:100px; overflow:hidden; }
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    object-fit: cover;
+}
 
-/* Responsive */
-@media(max-width:600px){
-    header h1 { font-size:2rem; }
+.bio-card {
+    background-color: #fff;
+    padding: 1rem;
+    margin: 1rem auto;
+    width: 280px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-align: center;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #333;
+}
+
+.skills-card {
+    background-color: #fff;
+    padding: 1rem;
+    margin: 1rem auto;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-align: center;
+    color: #333;
+}
+
+.skills-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.skill {
+    background-color: #eee;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+section {
+    padding: 2rem;
+    text-align: center;
+}
+
+#project-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.project-card {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    width: 220px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.project-card a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+#game-container {
+    position: relative;
+    display: inline-block;
+    margin-top: 1rem;
+    background-color: #000;
+    padding: 1rem;
+    border-radius: 10px;
+    resize: both;
+    overflow: hidden;
+    cursor: move;
+}
+
+#snake-canvas {
+    background-color: #111;
+    display: block;
+}
+
+button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+footer {
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
 }
 

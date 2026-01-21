@@ -1,104 +1,149 @@
-// ===== Dark/Light Mode Toggle =====
-const toggleBtn = document.getElementById("toggle-btn");
-toggleBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-    toggleBtn.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+// ======= DOM Elements =======
+const playBtn = document.getElementById('play-btn');
+const closeBtn = document.getElementById('close-btn');
+const gameContainer = document.getElementById('game-container');
+const canvas = document.getElementById('snake-canvas');
+let ctx = canvas.getContext('2d');
+const projectList = document.getElementById('project-list');
+
+// ======= Snake Game Variables =======
+let gameInterval;
+let snake;
+let direction;
+let food;
+let cellSize = 20;
+let rows = 20;
+let cols = 20;
+let gameRunning = false;
+
+// ======= Drag Variables =======
+let isDragging = false;
+let dragOffsetX, dragOffsetY;
+
+gameContainer.addEventListener('mousedown', e => {
+    isDragging = true;
+    dragOffsetX = e.clientX - gameContainer.offsetLeft;
+    dragOffsetY = e.clientY - gameContainer.offsetTop;
 });
-
-// ===== Load GitHub projects =====
-const username = "lokiscripts22";
-const projectList = document.getElementById("project-list");
-fetch(`https://api.github.com/users/${username}/repos`)
-.then(res=>res.json())
-.then(repos=>{
-    repos.forEach(repo=>{
-        if(!repo.fork){
-            const card = document.createElement("div");
-            card.className="project-card";
-            card.innerHTML=`<h3>${repo.name}</h3><p>${repo.description||"No description yet."}</p>
-            <p><a href="${repo.html_url}" target="_blank">View on GitHub</a></p>`;
-            projectList.appendChild(card);
-        }
-    });
-})
-.catch(err=>{
-    projectList.innerHTML="<p>Unable to load projects.</p>";
-    console.error(err);
-});
-
-// ===== Snake Game =====
-const snakeContainer = document.getElementById("snake-container");
-const canvas = document.getElementById("snake-game");
-const ctx = canvas.getContext("2d");
-const closeBtn = document.getElementById("close-snake");
-const resizeBtn = document.getElementById("resize-snake");
-
-let box = 20, snake=[{x:4*box,y:4*box}], food={x:Math.floor(Math.random()*10)*box, y:Math.floor(Math.random()*10)*box};
-let direction="RIGHT", gameInterval=setInterval(draw,200);
-
-// Toggle snake display
-document.getElementById("toggle-snake").addEventListener("click", e=>{
-    e.preventDefault();
-    if(snakeContainer.classList.contains("minimized")){
-        snakeContainer.classList.remove("minimized");
-    } else {
-        snakeContainer.style.display = snakeContainer.style.display==="none"?"block":"none";
-    }
-});
-
-// Close button
-closeBtn.addEventListener("click", ()=>snakeContainer.style.display="none");
-
-// Resize/minimize button
-resizeBtn.addEventListener("click", ()=>{
-    snakeContainer.classList.toggle("minimized");
-});
-
-// Drag snake
-let isDragging=false, offsetX, offsetY;
-document.getElementById("snake-header").addEventListener("mousedown", e=>{
-    isDragging=true;
-    offsetX=e.clientX - snakeContainer.getBoundingClientRect().left;
-    offsetY=e.clientY - snakeContainer.getBoundingClientRect().top;
-});
-document.addEventListener("mousemove", e=>{
+document.addEventListener('mouseup', () => { isDragging = false; });
+document.addEventListener('mousemove', e => {
     if(isDragging){
-        snakeContainer.style.left = e.clientX - offsetX + "px";
-        snakeContainer.style.top = e.clientY - offsetY + "px";
+        gameContainer.style.left = (e.clientX - dragOffsetX) + 'px';
+        gameContainer.style.top = (e.clientY - dragOffsetY) + 'px';
     }
 });
-document.addEventListener("mouseup", ()=>{isDragging=false;});
 
-// Snake logic
-document.addEventListener("keydown", e=>{
-    if(e.key==="ArrowUp" && direction!=="DOWN") direction="UP";
-    if(e.key==="ArrowDown" && direction!=="UP") direction="DOWN";
-    if(e.key==="ArrowLeft" && direction!=="RIGHT") direction="LEFT";
-    if(e.key==="ArrowRight" && direction!=="LEFT") direction="RIGHT";
+// ======= Snake Game Functions =======
+playBtn.addEventListener('click', () => {
+    gameContainer.classList.remove('hidden');
+    canvas.width = cols * cellSize;
+    canvas.height = rows * cellSize;
+    startGame();
 });
 
-function draw(){
-    ctx.fillStyle="#111"; ctx.fillRect(0,0,canvas.width,canvas.height);
-    snake.forEach((s,i)=>{ ctx.fillStyle=i===0?"lime":"green"; ctx.fillRect(s.x,s.y,box,box); });
-    ctx.fillStyle="red"; ctx.fillRect(food.x,food.y,box,box);
+closeBtn.addEventListener('click', () => {
+    stopGame();
+    gameContainer.classList.add('hidden');
+});
 
-    let head={...snake[0]};
-    if(direction==="LEFT") head.x-=box;
-    if(direction==="UP") head.y-=box;
-    if(direction==="RIGHT") head.x+=box;
-    if(direction==="DOWN") head.y+=box;
+function startGame() {
+    snake = [{x: 10, y: 10}];
+    direction = {x: 0, y: 0};
+    placeFood();
+    gameRunning = true;
+    document.addEventListener('keydown', changeDirection);
+    gameInterval = setInterval(gameLoop, 150);
+}
 
-    // Eat food
-    if(head.x===food.x && head.y===food.y){
-        snake.unshift(head);
-        food={x:Math.floor(Math.random()*10)*box, y:Math.floor(Math.random()*10)*box};
+function stopGame() {
+    gameRunning = false;
+    clearInterval(gameInterval);
+    document.removeEventListener('keydown', changeDirection);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function gameLoop() {
+    if(!gameRunning) return;
+
+    const head = {x: snake[0].x + direction.x, y: snake[0].y + direction.y};
+
+    if(head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows ||
+       snake.some(seg => seg.x === head.x && seg.y === head.y)) {
+        stopGame();
+        alert('Game Over!');
+        return;
+    }
+
+    snake.unshift(head);
+
+    if(head.x === food.x && head.y === food.y) {
+        placeFood();
     } else {
-        snake.pop(); snake.unshift(head);
+        snake.pop();
     }
 
-    // Collision walls
-    if(head.x<0||head.x>=canvas.width||head.y<0||head.y>=canvas.height||snake.slice(1).some(s=>s.x===head.x && s.y===head.y)){
-        alert("Game Over!"); snake=[{x:4*box,y:4*box}]; direction="RIGHT";
+    drawGame();
+}
+
+function drawGame() {
+    ctx.fillStyle = '#111';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#0f0';
+    snake.forEach(seg => ctx.fillRect(seg.x*cellSize, seg.y*cellSize, cellSize, cellSize));
+
+    ctx.fillStyle = '#f00';
+    ctx.fillRect(food.x*cellSize, food.y*cellSize, cellSize, cellSize);
+}
+
+function placeFood() {
+    food = {x: Math.floor(Math.random()*cols), y: Math.floor(Math.random()*rows)};
+}
+
+function changeDirection(event) {
+    const key = event.key.toLowerCase();
+    switch(key){
+        case 'w':
+        case 'arrowup':
+            if(direction.y===0) direction={x:0, y:-1};
+            break;
+        case 's':
+        case 'arrowdown':
+            if(direction.y===0) direction={x:0, y:1};
+            break;
+        case 'a':
+        case 'arrowleft':
+            if(direction.x===0) direction={x:-1, y:0};
+            break;
+        case 'd':
+        case 'arrowright':
+            if(direction.x===0) direction={x:1, y:0};
+            break;
     }
 }
+
+// ======= GitHub Projects Loader =======
+async function loadProjects() {
+    const username = "lokiscripts22"; // your GitHub username
+    try {
+        const response = await fetch(`https://api.github.com/users/${username}/repos`);
+        const repos = await response.json();
+        projectList.innerHTML = '';
+        repos.forEach(repo => {
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            card.innerHTML = `
+                <h3>${repo.name}</h3>
+                <p>${repo.description ? repo.description : 'No description'}</p>
+                <a href="${repo.html_url}" target="_blank">View on GitHub</a>
+            `;
+            projectList.appendChild(card);
+        });
+    } catch (err) {
+        projectList.innerHTML = `<p>Failed to load projects.</p>`;
+        console.error(err);
+    }
+}
+
+loadProjects();
 

@@ -1,151 +1,113 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: system-ui, sans-serif;
-}
-
 body {
-  background: #0e0e0e;
-  color: #eaeaea;
-  line-height: 1.6;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  color: #333;
 }
 
 /* ---------- HEADER ---------- */
 
 header {
+  background-color: #1e1e1e;
+  color: white;
   text-align: center;
-  padding: 4rem 1rem 3rem;
+  padding: 2.5rem 1rem;
 }
 
 .profile-pic {
   width: 180px;
   height: 180px;
-  object-fit: cover;
   border-radius: 50%;
-  margin: 1.5rem 0;
-  border: 3px solid #444;
+  border: 4px solid white;
+  object-fit: cover;
+  margin-top: 1rem;
 }
 
-.bio-card {
-  max-width: 500px;
-  margin: 0 auto 2rem;
-  background: #1a1a1a;
-  padding: 1.2rem;
-  border-radius: 12px;
-}
-
+.bio-card,
 .skills-card {
-  max-width: 600px;
-  margin: 0 auto;
+  background: #ffffff;
+  color: #333;
+  max-width: 320px;
+  margin: 1.2rem auto;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
 .skills-icons {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-top: 0.8rem;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .skill {
-  background: #222;
-  padding: 0.5rem 0.9rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-}
-
-/* ---------- SECTIONS ---------- */
-
-section {
-  max-width: 1100px;
-  margin: 3rem auto;
-  padding: 0 1rem;
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
+  background: #eaeaea;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  font-weight: bold;
 }
 
 /* ---------- PROJECTS ---------- */
 
 #projects {
-  background: #1b1b1b;
-  padding: 2.5rem 1rem;
-  border-radius: 18px;
+  background: #2b2b2b;
+  color: white;
+  padding: 3rem 1rem;
+  text-align: center;
 }
 
 #project-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .project-card {
-  background: #242424;
-  padding: 1.2rem;
-  border-radius: 14px;
-  transition: transform 0.2s ease;
-}
-
-.project-card:hover {
-  transform: translateY(-4px);
-}
-
-.project-card h3 {
-  margin-bottom: 0.4rem;
+  background: #3a3a3a;
+  color: white;
+  width: 240px;
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .project-card a {
-  color: #4da3ff;
+  color: #66b3ff;
   text-decoration: none;
 }
 
 /* ---------- SNAKE GAME ---------- */
 
 #snake-game {
+  padding: 3rem 1rem;
   text-align: center;
-  opacity: 0.95;
-}
-
-.game-note {
-  font-size: 0.85rem;
-  color: #aaa;
-  margin-bottom: 0.8rem;
-}
-
-#start-snake {
-  margin-bottom: 1rem;
-  padding: 0.6rem 1.2rem;
-  background: #2e7dff;
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  cursor: pointer;
-}
-
-#start-snake:hover {
-  background: #1e66e1;
 }
 
 .snake-wrapper {
+  margin-top: 1rem;
   display: flex;
   justify-content: center;
 }
 
-canvas {
+#snake-canvas {
   background: #111;
-  border-radius: 12px;
-  border: 2px solid #333;
+  border-radius: 8px;
+  border: 3px solid #333;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 /* ---------- FOOTER ---------- */
 
 footer {
+  background: #1e1e1e;
+  color: white;
   text-align: center;
-  padding: 2rem 1rem;
-  color: #777;
-  font-size: 0.85rem;
+  padding: 1rem;
 }
 

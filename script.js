@@ -1,33 +1,18 @@
-/* ===============================
-   CANVAS + ELEMENTS
-================================ */
+/* ---------- SNAKE GAME ---------- */
 
 const canvas = document.getElementById("snake-canvas");
 const ctx = canvas.getContext("2d");
-
 const startBtn = document.getElementById("start-snake");
-
-/* ===============================
-   GAME CONSTANTS
-================================ */
 
 const cellSize = 20;
 const cols = canvas.width / cellSize;
 const rows = canvas.height / cellSize;
-
-/* ===============================
-   GAME STATE
-================================ */
 
 let snake = [];
 let direction = { x: 1, y: 0 };
 let food = {};
 let loop = null;
 let running = false;
-
-/* ===============================
-   GAME SETUP
-================================ */
 
 function startGame() {
   snake = [{ x: 10, y: 10 }];
@@ -39,20 +24,12 @@ function startGame() {
   loop = setInterval(update, 120);
 }
 
-/* ===============================
-   FOOD
-================================ */
-
 function placeFood() {
   food = {
     x: Math.floor(Math.random() * cols),
     y: Math.floor(Math.random() * rows)
   };
 }
-
-/* ===============================
-   GAME LOOP
-================================ */
 
 function update() {
   if (!running) return;
@@ -62,7 +39,6 @@ function update() {
     y: snake[0].y + direction.y
   };
 
-  // Collision detection
   if (
     head.x < 0 || head.x >= cols ||
     head.y < 0 || head.y >= rows ||
@@ -83,45 +59,25 @@ function update() {
   draw();
 }
 
-/* ===============================
-   RENDER
-================================ */
-
 function draw() {
   ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.fillStyle = "#0f0";
   snake.forEach(s =>
-    ctx.fillRect(
-      s.x * cellSize,
-      s.y * cellSize,
-      cellSize,
-      cellSize
-    )
+    ctx.fillRect(s.x * cellSize, s.y * cellSize, cellSize, cellSize)
   );
 
   ctx.fillStyle = "#f00";
-  ctx.fillRect(
-    food.x * cellSize,
-    food.y * cellSize,
-    cellSize,
-    cellSize
-  );
+  ctx.fillRect(food.x * cellSize, food.y * cellSize, cellSize, cellSize);
 }
-
-/* ===============================
-   GAME OVER (NO OVERLAY)
-================================ */
 
 function endGame() {
   running = false;
   clearInterval(loop);
 }
 
-/* ===============================
-   CONTROLS (WASD + ARROWS)
-================================ */
+/* ---------- CONTROLS ---------- */
 
 document.addEventListener("keydown", e => {
   const key = e.key.toLowerCase();
@@ -139,15 +95,9 @@ document.addEventListener("keydown", e => {
     direction = { x: 1, y: 0 };
 });
 
-/* ===============================
-   START BUTTON
-================================ */
-
 startBtn.onclick = startGame;
 
-/* ===============================
-   PROJECTS (UNCHANGED)
-================================ */
+/* ---------- PROJECTS ---------- */
 
 async function loadProjects() {
   const username = "lokiscripts22";

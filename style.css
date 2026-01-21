@@ -114,25 +114,27 @@ body {
   text-align: center;
 }
 
+.lighthouse-images {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
 .lighthouse-images img {
-  width: 100%;
+  display: block;
+  width: auto;
+  height: auto;
   max-width: 420px;
-  max-height: 300px;
+  max-height: 260px;
   object-fit: contain;
   background: #111;
   padding: 0.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
-
-.lighthouse-images img {
-  max-width: 420px;
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-
 
 /* SNAKE */
 #snake-game {

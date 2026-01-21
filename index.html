@@ -1,58 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Loki Scripts | Developer Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <header>
-        <h1>Hi, I'm Your Name</h1>
+
+<div class="layout">
+
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar">
         <img src="images/profile.png" alt="Profile Picture" class="profile-pic">
 
-        <!-- Bio card -->
-        <div class="bio-card">
-            <p><strong>Junior Python & Java Developer</strong></p>
-            <p>Focused on automation, backend development, and data-driven systems.</p>
-            <p>Language: English (willing to learn and adapt for any project)</p>
-            <p>Passionate about creating clean, scalable, and maintainable code.</p>
+        <h2>Loki Scripts</h2>
+        <p class="role">Python & Java Developer</p>
+
+        <div class="sidebar-section">
+            <h3>About</h3>
+            <p>
+                Junior developer focused on automation, backend systems,
+                and data-driven tools. Passionate about clean, scalable code.
+            </p>
         </div>
 
-        <!-- Skills -->
-        <div class="skills-card">
+        <div class="sidebar-section">
             <h3>Skills</h3>
-            <div class="skills-icons">
-                <span class="skill">🐍 Python</span>
-                <span class="skill">☕ Java</span>
-                <span class="skill">🌐 HTML</span>
-                <span class="skill">🎨 CSS</span>
-                <span class="skill">💻 JavaScript</span>
+            <div class="skills">
+                <span>Python</span>
+                <span>Java</span>
+                <span>JavaScript</span>
+                <span>HTML</span>
+                <span>CSS</span>
             </div>
         </div>
-    </header>
+    </aside>
 
-    <section id="projects">
-        <h2>Projects</h2>
-        <div id="project-list">
-            <p>Loading your GitHub projects...</p>
-        </div>
-    </section>
+    <!-- ===== Main Content ===== -->
+    <main class="content">
 
-    <section id="snake-game">
-        <h2>Play Snake!</h2>
-        <button id="play-btn">Play Snake</button>
+        <!-- Hero -->
+        <section class="hero">
+            <h1>
+                Building <span>Automation</span><br>
+                & Smart Systems
+            </h1>
+            <p>
+                I create tools, bots, and backend logic focused on efficiency,
+                reliability, and real-world use cases.
+            </p>
+            <button id="play-btn" class="primary-btn">Play Snake 🐍</button>
+        </section>
+
+        <!-- Stats -->
+        <section class="stats">
+            <div><strong>10+</strong><span>Projects</span></div>
+            <div><strong>2+</strong><span>Languages</span></div>
+            <div><strong>∞</strong><span>Learning</span></div>
+        </section>
+
+        <!-- Projects -->
+        <section class="projects">
+            <h2>Projects</h2>
+            <div id="project-list">
+                <p>Loading your GitHub projects...</p>
+            </div>
+        </section>
+
+        <!-- Snake Game -->
         <div id="game-container" class="hidden">
             <canvas id="snake-canvas"></canvas>
-            <button id="close-btn">Close Game</button>
+            <button id="close-btn">Close</button>
         </div>
-    </section>
 
-    <footer>
-        <p>Contact me: email@example.com</p>
-    </footer>
+    </main>
+</div>
 
-    <script src="script.js"></script>
+<footer>
+    <p>© 2026 Loki Scripts · Built with HTML, CSS & JS</p>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
+
 

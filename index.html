@@ -8,30 +8,42 @@
 </head>
 <body>
 
-<header>
-  <h1>Hi, I'm Loki</h1>
+<!-- HERO / HEADER -->
+<header class="hero">
 
-  <img src="images/profile.png" alt="Profile Picture" class="profile-pic">
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source src="videos/beach-backdrop.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
-  <div class="bio-card">
-    <p><strong>Junior Python & Java Developer</strong></p>
-    <p>Building automations and smart systems.</p>
-    <p>Focused on clean, scalable, maintainable code.</p>
-  </div>
+  <div class="hero-overlay"></div>
 
-  <div class="skills-card">
-    <h3>Skills</h3>
-    <div class="skills-icons">
-      <span class="skill">🐍 Python</span>
-      <span class="skill">☕ Java</span>
-      <span class="skill">🌐 HTML</span>
-      <span class="skill">🎨 CSS</span>
-      <span class="skill">💻 JavaScript</span>
+  <div class="hero-content">
+    <h1>Hi, I'm Loki</h1>
+
+    <img src="images/profile.png" alt="Profile Picture" class="profile-pic">
+
+    <div class="bio-card">
+      <p><strong>Junior Python & Java Developer</strong></p>
+      <p>Building automations and smart systems.</p>
+      <p>Focused on clean, scalable, maintainable code.</p>
+    </div>
+
+    <div class="skills-card">
+      <h3>Skills</h3>
+      <div class="skills-icons">
+        <span class="skill">🐍 Python</span>
+        <span class="skill">☕ Java</span>
+        <span class="skill">🌐 HTML</span>
+        <span class="skill">🎨 CSS</span>
+        <span class="skill">💻 JavaScript</span>
+      </div>
     </div>
   </div>
+
 </header>
 
-<!-- PROJECTS SECTION -->
+<!-- PROJECTS -->
 <section id="projects">
   <h2>Projects</h2>
   <div id="project-list">
@@ -39,7 +51,7 @@
   </div>
 </section>
 
-<!-- SNAKE GAME (NOT A MAIN FEATURE) -->
+<!-- SNAKE (SHOWCASE, NOT MAIN FEATURE) -->
 <section id="snake-game">
   <h2>Snake Game</h2>
   <p>Classic JavaScript canvas game (WASD / Arrow Keys)</p>
@@ -55,9 +67,10 @@
   <p>Contact: email@example.com</p>
 </footer>
 
-<!-- 🔥 CACHE-BUSTED SCRIPT -->
+<!-- CACHE-BUSTED SCRIPT -->
 <script src="script.js?v=20260121"></script>
 
 </body>
 </html>
+
 

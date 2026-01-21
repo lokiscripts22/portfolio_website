@@ -6,23 +6,24 @@
   <title>Khayne | Portfolio</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
 <!-- HERO -->
 <header class="hero">
   <video class="hero-video" autoplay muted loop playsinline>
-    <source src="videos/beach-backdrop.mp4" type="video/mp4">
+    <source src="videos/beach-backdrop.mp4" type="video/mp4" />
   </video>
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <h1>Hi, I'm Khayne</h1>
-    <p class="username">lokiscripts22</p>
+    <h1>Hi, I’m Khayne</h1>
+    <h2 class="username">lokiscripts22</h2>
 
-    <img src="images/profile.png" class="profile-pic" alt="Profile">
+    <img src="images/profile.png" alt="Profile picture" class="profile-pic" />
 
     <div class="bio-card">
-      <p><strong>Junior Python & Java Developer</strong></p>
+      <p><strong>Junior Software Developer</strong></p>
       <p>Focused on clean, scalable, maintainable code.</p>
       <p>
         GitHub:
@@ -42,27 +43,47 @@
         <span class="skill">💻 JavaScript</span>
       </div>
     </div>
+
+    <div class="lighthouse-card">
+      <h3>🚦 Lighthouse Scores</h3>
+      <p>Desktop: <strong>87</strong></p>
+      <p>Mobile: <strong>87</strong></p>
+    </div>
   </div>
 </header>
 
 <!-- PROJECTS -->
 <section id="projects">
   <h2>Projects</h2>
-  <div id="project-list">Loading projects...</div>
-</section>
-
-<!-- LIGHTHOUSE -->
-<section id="lighthouse-proof">
-  <h2>🚦 Lighthouse Scores</h2>
-  <p>Audited on Desktop & Mobile</p>
-
-  <div class="lighthouse-images">
-    <img src="lighthouse/lighthouse-desktop.png" alt="Desktop Lighthouse Score">
-    <img src="lighthouse/lighthouse-mobile.png" alt="Mobile Lighthouse Score">
+  <div id="project-list">
+    <p>Loading projects...</p>
   </div>
 </section>
 
-<!-- GAMES (DESKTOP ONLY) -->
+<!-- LIGHTHOUSE PROOF -->
+<section id="lighthouse-proof">
+  <h2>Performance Audit Proof</h2>
+  <p>Audited using Google Lighthouse (Incognito, no extensions)</p>
+
+  <div class="lighthouse-images">
+    <img
+      src="lighthouse/lighthouse-desktop.png"
+      alt="Lighthouse Desktop Score"
+      loading="lazy"
+      width="400"
+      height="260"
+    />
+    <img
+      src="lighthouse/lighthouse-mobile.png"
+      alt="Lighthouse Mobile Score"
+      loading="lazy"
+      width="400"
+      height="260"
+    />
+  </div>
+</section>
+
+<!-- GAMES SHOWCASE -->
 <section id="games-showcase">
   <h2>Game Demos</h2>
 
@@ -71,27 +92,27 @@
     <div class="game-card">
       <h3>Snake</h3>
       <button id="start-snake">Start</button>
-      <canvas id="snake-canvas" width="300" height="300"></canvas>
+      <canvas id="snake-canvas" width="400" height="400"></canvas>
     </div>
 
     <!-- PONG -->
     <div class="game-card">
       <h3>Pong</h3>
       <button id="start-pong">Start</button>
-      <canvas id="pong-canvas" width="300" height="300"></canvas>
+      <canvas id="pong-canvas" width="400" height="300"></canvas>
     </div>
 
     <!-- SPACE INVADERS -->
     <div class="game-card">
       <h3>Space Invaders</h3>
       <button id="start-invaders">Start</button>
-      <canvas id="invaders-canvas" width="300" height="300"></canvas>
+      <canvas id="invaders-canvas" width="400" height="300"></canvas>
     </div>
   </div>
 </section>
 
 <footer>
-  <p>© Khayne · lokiscripts22</p>
+  <p>© 2026 Khayne | lokiscripts22</p>
 </footer>
 
 <script src="script.js"></script>

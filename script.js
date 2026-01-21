@@ -1,5 +1,33 @@
 /* ===============================
-   PROJECTS (RESTORED)
+   GLOBAL GAME CONTROL
+================================ */
+let activeGame = null;
+let snakeLoop = null;
+let pongLoop = null;
+let invLoop = null;
+
+function stopAllGames() {
+  activeGame = null;
+  clearInterval(snakeLoop);
+  clearInterval(pongLoop);
+  clearInterval(invLoop);
+}
+
+/* ===============================
+   KEY HANDLING (ARROWS + WASD)
+================================ */
+const keys = {};
+
+document.addEventListener("keydown", e => {
+  keys[e.key.toLowerCase()] = true;
+});
+
+document.addEventListener("keyup", e => {
+  keys[e.key.toLowerCase()] = false;
+});
+
+/* ===============================
+   PROJECTS (SAFE)
 ================================ */
 async function loadProjects() {
   try {
@@ -19,38 +47,34 @@ async function loadProjects() {
       `;
       list.appendChild(card);
     });
-  } catch (e) {
-    console.error("Projects failed to load", e);
+  } catch {
+    console.warn("GitHub API blocked");
   }
 }
 loadProjects();
-
-/* ===============================
-   GAME STATE CONTROL
-================================ */
-let activeGame = null;
 
 /* ===============================
    SNAKE
 ================================ */
 const snakeCanvas = document.getElementById("snake-canvas");
 const sctx = snakeCanvas.getContext("2d");
-const startSnakeBtn = document.getElementById("start-snake");
+document.getElementById("start-snake").onclick = startSnake;
 
 const grid = 20;
-let snake, food, snakeDir, snakeLoop;
+let snake, food, snakeDir;
 
 function startSnake() {
+  stopAllGames();
   activeGame = "snake";
+
   snake = [{ x: 10, y: 10 }];
   snakeDir = { x: 1, y: 0 };
-  food = randomFood();
+  food = spawnFood();
 
-  clearInterval(snakeLoop);
   snakeLoop = setInterval(updateSnake, 120);
 }
 
-function randomFood() {
+function spawnFood() {
   return {
     x: Math.floor(Math.random() * (snakeCanvas.width / grid)),
     y: Math.floor(Math.random() * (snakeCanvas.height / grid))
@@ -58,10 +82,14 @@ function randomFood() {
 }
 
 function updateSnake() {
-  const head = {
-    x: snake[0].x + snakeDir.x,
-    y: snake[0].y + snakeDir.y
-  };
+  if (activeGame !== "snake") return;
+
+  if ((keys["arrowup"] || keys["w"]) && snakeDir.y !== 1) snakeDir = { x: 0, y: -1 };
+  if ((keys["arrowdown"] || keys["s"]) && snakeDir.y !== -1) snakeDir = { x: 0, y: 1 };
+  if ((keys["arrowleft"] || keys["a"]) && snakeDir.x !== 1) snakeDir = { x: -1, y: 0 };
+  if ((keys["arrowright"] || keys["d"]) && snakeDir.x !== -1) snakeDir = { x: 1, y: 0 };
+
+  const head = { x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y };
 
   if (
     head.x < 0 || head.y < 0 ||
@@ -69,14 +97,14 @@ function updateSnake() {
     head.y >= snakeCanvas.height / grid ||
     snake.some(s => s.x === head.x && s.y === head.y)
   ) {
-    clearInterval(snakeLoop);
+    stopAllGames();
     return;
   }
 
   snake.unshift(head);
 
   if (head.x === food.x && head.y === food.y) {
-    food = randomFood();
+    food = spawnFood();
   } else {
     snake.pop();
   }
@@ -85,130 +113,145 @@ function updateSnake() {
   sctx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
 
   sctx.fillStyle = "#00ff88";
-  snake.forEach(s =>
-    sctx.fillRect(s.x * grid, s.y * grid, grid, grid)
-  );
+  snake.forEach(s => sctx.fillRect(s.x * grid, s.y * grid, grid - 2, grid - 2));
 
   sctx.fillStyle = "#ff4444";
-  sctx.fillRect(food.x * grid, food.y * grid, grid, grid);
+  sctx.fillRect(food.x * grid, food.y * grid, grid - 2, grid - 2);
 }
 
-startSnakeBtn.onclick = startSnake;
-
 /* ===============================
-   PONG
+   PONG (WITH AI)
 ================================ */
 const pongCanvas = document.getElementById("pong-canvas");
 const pctx = pongCanvas.getContext("2d");
-const startPongBtn = document.getElementById("start-pong");
+document.getElementById("start-pong").onclick = startPong;
 
-let paddleY, ball, pongLoop;
+let pY, aiY, ball;
 
 function startPong() {
+  stopAllGames();
   activeGame = "pong";
-  paddleY = 120;
-  ball = { x: 150, y: 150, vx: 4, vy: 4 };
 
-  clearInterval(pongLoop);
+  pY = aiY = pongCanvas.height / 2 - 40;
+  ball = { x: 200, y: 150, vx: 4, vy: 3 };
+
   pongLoop = setInterval(updatePong, 16);
 }
 
 function updatePong() {
-  pctx.fillStyle = "#1e1b2e"; // dark purple
-  pctx.fillRect(0, 0, pongCanvas.width, pongCanvas.height);
+  if (activeGame !== "pong") return;
 
-  pctx.fillStyle = "#ffffff";
-  pctx.fillRect(10, paddleY, 10, 60);
+  if ((keys["w"] || keys["arrowup"]) && pY > 0) pY -= 6;
+  if ((keys["s"] || keys["arrowdown"]) && pY < pongCanvas.height - 80) pY += 6;
+
+  if (ball.y > aiY + 40) aiY += 4;
+  if (ball.y < aiY + 40) aiY -= 4;
 
   ball.x += ball.vx;
   ball.y += ball.vy;
 
   if (ball.y <= 0 || ball.y >= pongCanvas.height) ball.vy *= -1;
-  if (ball.x <= 20 && ball.y > paddleY && ball.y < paddleY + 60) ball.vx *= -1;
 
-  if (ball.x > pongCanvas.width) {
-    ball.x = 150;
-    ball.y = 150;
+  if (ball.x < 20 && ball.y > pY && ball.y < pY + 80) ball.vx *= -1;
+  if (ball.x > pongCanvas.width - 20 && ball.y > aiY && ball.y < aiY + 80) ball.vx *= -1;
+
+  if (ball.x < 0 || ball.x > pongCanvas.width) {
+    stopAllGames();
+    return;
   }
 
+  pctx.fillStyle = "#111";
+  pctx.fillRect(0, 0, pongCanvas.width, pongCanvas.height);
+
+  pctx.fillStyle = "#fff";
+  pctx.fillRect(10, pY, 10, 80);
+  pctx.fillRect(pongCanvas.width - 20, aiY, 10, 80);
   pctx.beginPath();
   pctx.arc(ball.x, ball.y, 6, 0, Math.PI * 2);
   pctx.fill();
 }
 
-startPongBtn.onclick = startPong;
-
 /* ===============================
-   SPACE INVADERS
+   SPACE INVADERS (LEVEL AI)
 ================================ */
 const invCanvas = document.getElementById("invaders-canvas");
 const ictx = invCanvas.getContext("2d");
-const startInvBtn = document.getElementById("start-invaders");
+document.getElementById("start-invaders").onclick = startInvaders;
 
-let player, bullets, invaders, invLoop;
+let level, playerX, bullets, invaders, invSpeed;
 
 function startInvaders() {
+  stopAllGames();
   activeGame = "invaders";
-  player = { x: 140, y: 260 };
-  bullets = [];
-  invaders = [];
-
-  for (let x = 40; x <= 240; x += 40) {
-    invaders.push({ x, y: 40 });
-  }
-
-  clearInterval(invLoop);
+  level = 1;
+  initLevel();
   invLoop = setInterval(updateInvaders, 30);
 }
 
-function updateInvaders() {
-  ictx.fillStyle = "#1e1b2e"; // dark purple
-  ictx.fillRect(0, 0, invCanvas.width, invCanvas.height);
+function initLevel() {
+  playerX = invCanvas.width / 2;
+  bullets = [];
+  invSpeed = 1 + level * 0.4;
+  invaders = [];
 
-  ictx.fillStyle = "#00ff88";
-  ictx.fillRect(player.x, player.y, 20, 10);
-
-  bullets.forEach(b => b.y -= 6);
-  bullets = bullets.filter(b => b.y > 0);
-
-  invaders.forEach(i => {
-    ictx.fillStyle = "#a855f7"; // purple invaders
-    ictx.fillRect(i.x, i.y, 20, 15);
-  });
-
-  bullets.forEach(b => {
-    invaders = invaders.filter(i =>
-      !(b.x > i.x && b.x < i.x + 20 && b.y > i.y && b.y < i.y + 15)
-    );
-  });
-
-  bullets.forEach(b => {
-    ictx.fillStyle = "#ffffff";
-    ictx.fillRect(b.x, b.y, 2, 6);
-  });
+  for (let r = 0; r < Math.min(3 + level, 6); r++) {
+    for (let c = 0; c < 8; c++) {
+      invaders.push({ x: 40 + c * 40, y: 40 + r * 30 });
+    }
+  }
 }
 
-startInvBtn.onclick = startInvaders;
+function updateInvaders() {
+  if (activeGame !== "invaders") return;
 
-/* ===============================
-   CONTROLS (SAFE)
-================================ */
-document.addEventListener("keydown", e => {
-  if (activeGame === "snake") {
-    if (e.key === "w" || e.key === "ArrowUp") snakeDir = { x: 0, y: -1 };
-    if (e.key === "s" || e.key === "ArrowDown") snakeDir = { x: 0, y: 1 };
-    if (e.key === "a" || e.key === "ArrowLeft") snakeDir = { x: -1, y: 0 };
-    if (e.key === "d" || e.key === "ArrowRight") snakeDir = { x: 1, y: 0 };
+  if (keys["a"] || keys["arrowleft"]) playerX -= 5;
+  if (keys["d"] || keys["arrowright"]) playerX += 5;
+
+  if (keys[" "] && bullets.length < 3) {
+    bullets.push({ x: playerX, y: invCanvas.height - 30 });
+    keys[" "] = false;
   }
 
-  if (activeGame === "pong") {
-    if (e.key === "w" || e.key === "ArrowUp") paddleY -= 15;
-    if (e.key === "s" || e.key === "ArrowDown") paddleY += 15;
+  invaders.forEach(i => i.x += invSpeed);
+  if (invaders.some(i => i.x > invCanvas.width - 20 || i.x < 10)) {
+    invSpeed *= -1;
+    invaders.forEach(i => i.y += 10);
   }
 
-  if (activeGame === "invaders") {
-    if (e.key === "ArrowLeft") player.x -= 10;
-    if (e.key === "ArrowRight") player.x += 10;
-    if (e.key === " ") bullets.push({ x: player.x + 9, y: player.y });
+  bullets.forEach(b => b.y -= 6);
+
+  bullets = bullets.filter(b => b.y > 0);
+  invaders = invaders.filter(i => {
+    const hit = bullets.some(b =>
+      b.x > i.x && b.x < i.x + 20 && b.y > i.y && b.y < i.y + 20
+    );
+    return !hit;
+  });
+
+  if (invaders.length === 0) {
+    level++;
+    if (level > 10) {
+      stopAllGames();
+      return;
+    }
+    initLevel();
   }
-});
+
+  if (invaders.some(i => i.y > invCanvas.height - 50)) {
+    stopAllGames();
+    return;
+  }
+
+  ictx.fillStyle = "#111";
+  ictx.fillRect(0, 0, invCanvas.width, invCanvas.height);
+
+  ictx.fillStyle = "#0f0";
+  ictx.fillRect(playerX - 15, invCanvas.height - 20, 30, 10);
+
+  ictx.fillStyle = "#0ff";
+  bullets.forEach(b => ictx.fillRect(b.x, b.y, 3, 8));
+
+  ictx.fillStyle = "#a020f0";
+  invaders.forEach(i => ictx.fillRect(i.x, i.y, 20, 20));
+}
+

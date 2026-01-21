@@ -19,13 +19,7 @@ function stopAllGames() {
 const keys = {};
 
 document.addEventListener("keydown", e => {
-  const key = e.key.toLowerCase();
-
-  if (key === " " && activeGame) {
-    e.preventDefault(); // prevent button activation
-  }
-
-  keys[key] = true;
+  keys[e.key.toLowerCase()] = true;
 });
 
 document.addEventListener("keyup", e => {
@@ -33,7 +27,7 @@ document.addEventListener("keyup", e => {
 });
 
 /* ===============================
-   PROJECTS
+   PROJECTS (SAFE)
 ================================ */
 async function loadProjects() {
   try {
@@ -72,7 +66,6 @@ let snake, food, snakeDir;
 function startSnake() {
   stopAllGames();
   activeGame = "snake";
-  document.getElementById("start-snake").blur();
 
   snake = [{ x: 10, y: 10 }];
   snakeDir = { x: 1, y: 0 };
@@ -91,10 +84,10 @@ function spawnFood() {
 function updateSnake() {
   if (activeGame !== "snake") return;
 
-  if ((keys["w"] || keys["arrowup"]) && snakeDir.y !== 1) snakeDir = { x: 0, y: -1 };
-  if ((keys["s"] || keys["arrowdown"]) && snakeDir.y !== -1) snakeDir = { x: 0, y: 1 };
-  if ((keys["a"] || keys["arrowleft"]) && snakeDir.x !== 1) snakeDir = { x: -1, y: 0 };
-  if ((keys["d"] || keys["arrowright"]) && snakeDir.x !== -1) snakeDir = { x: 1, y: 0 };
+  if ((keys["arrowup"] || keys["w"]) && snakeDir.y !== 1) snakeDir = { x: 0, y: -1 };
+  if ((keys["arrowdown"] || keys["s"]) && snakeDir.y !== -1) snakeDir = { x: 0, y: 1 };
+  if ((keys["arrowleft"] || keys["a"]) && snakeDir.x !== 1) snakeDir = { x: -1, y: 0 };
+  if ((keys["arrowright"] || keys["d"]) && snakeDir.x !== -1) snakeDir = { x: 1, y: 0 };
 
   const head = { x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y };
 
@@ -110,8 +103,11 @@ function updateSnake() {
 
   snake.unshift(head);
 
-  if (head.x === food.x && head.y === food.y) food = spawnFood();
-  else snake.pop();
+  if (head.x === food.x && head.y === food.y) {
+    food = spawnFood();
+  } else {
+    snake.pop();
+  }
 
   sctx.fillStyle = "#111";
   sctx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
@@ -135,7 +131,6 @@ let pY, aiY, ball;
 function startPong() {
   stopAllGames();
   activeGame = "pong";
-  document.getElementById("start-pong").blur();
 
   pY = aiY = pongCanvas.height / 2 - 40;
   ball = { x: 200, y: 150, vx: 4, vy: 3 };
@@ -177,7 +172,7 @@ function updatePong() {
 }
 
 /* ===============================
-   SPACE INVADERS (BALANCED)
+   SPACE INVADERS (FIXED LOSS LOGIC)
 ================================ */
 const invCanvas = document.getElementById("invaders-canvas");
 const ictx = invCanvas.getContext("2d");
@@ -188,8 +183,6 @@ let level, playerX, bullets, invaders, invSpeed;
 function startInvaders() {
   stopAllGames();
   activeGame = "invaders";
-  document.getElementById("start-invaders").blur();
-
   level = 1;
   initLevel();
   invLoop = setInterval(updateInvaders, 30);
@@ -198,16 +191,14 @@ function startInvaders() {
 function initLevel() {
   playerX = invCanvas.width / 2;
   bullets = [];
-
-  invSpeed = 0.6 + level * 0.3;
+  invSpeed = 0.8 + level * 0.35;
   invaders = [];
 
   const rows = Math.min(2 + level, 5);
-  const cols = 7;
 
   for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      invaders.push({ x: 50 + c * 45, y: 40 + r * 35 });
+    for (let c = 0; c < 7; c++) {
+      invaders.push({ x: 40 + c * 45, y: 40 + r * 35 });
     }
   }
 }
@@ -218,19 +209,21 @@ function updateInvaders() {
   if (keys["a"] || keys["arrowleft"]) playerX -= 5;
   if (keys["d"] || keys["arrowright"]) playerX += 5;
 
-  if ((keys[" "] || keys["space"]) && bullets.length < 3) {
-    bullets.push({ x: playerX, y: invCanvas.height - 45 });
+  playerX = Math.max(20, Math.min(invCanvas.width - 20, playerX));
+
+  if (keys[" "] && bullets.length < 2) {
+    bullets.push({ x: playerX, y: invCanvas.height - 35 });
     keys[" "] = false;
-    keys["space"] = false;
   }
 
   invaders.forEach(i => i.x += invSpeed);
-  if (invaders.some(i => i.x > invCanvas.width - 30 || i.x < 10)) {
+
+  if (invaders.some(i => i.x > invCanvas.width - 25 || i.x < 5)) {
     invSpeed *= -1;
-    invaders.forEach(i => i.y += 10);
+    invaders.forEach(i => i.y += 18);
   }
 
-  bullets.forEach(b => b.y -= 6);
+  bullets.forEach(b => b.y -= 7);
   bullets = bullets.filter(b => b.y > 0);
 
   invaders = invaders.filter(i => {
@@ -250,7 +243,9 @@ function updateInvaders() {
     initLevel();
   }
 
-  if (invaders.some(i => i.y > invCanvas.height - 60)) {
+  /* 🔥 FIXED LOSS CONDITION 🔥 */
+  const playerLine = invCanvas.height - 50;
+  if (invaders.some(i => i.y + 20 >= playerLine)) {
     stopAllGames();
     return;
   }
@@ -258,20 +253,17 @@ function updateInvaders() {
   ictx.fillStyle = "#111";
   ictx.fillRect(0, 0, invCanvas.width, invCanvas.height);
 
-  // ship
+  /* Player Ship */
   ictx.fillStyle = "#00ff88";
-  ictx.beginPath();
-  ictx.moveTo(playerX, invCanvas.height - 35);
-  ictx.lineTo(playerX - 15, invCanvas.height - 15);
-  ictx.lineTo(playerX + 15, invCanvas.height - 15);
-  ictx.closePath();
-  ictx.fill();
+  ictx.fillRect(playerX - 15, invCanvas.height - 25, 30, 10);
+  ictx.fillRect(playerX - 6, invCanvas.height - 35, 12, 10);
 
-  // bullets
+  /* Bullets */
   ictx.fillStyle = "#0ff";
-  bullets.forEach(b => ictx.fillRect(b.x - 2, b.y, 4, 10));
+  bullets.forEach(b => ictx.fillRect(b.x - 1, b.y, 3, 8));
 
-  // invaders
+  /* Invaders */
   ictx.fillStyle = "#a020f0";
   invaders.forEach(i => ictx.fillRect(i.x, i.y, 20, 20));
 }
+

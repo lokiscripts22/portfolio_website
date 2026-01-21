@@ -5,6 +5,9 @@ const startBtn = document.getElementById("start-snake");
 const restartBtn = document.getElementById("restart-snake");
 const overlay = document.getElementById("snake-overlay");
 
+// hide death overlay on load
+overlay.classList.add("hidden");
+
 const cellSize = 20;
 const cols = canvas.width / cellSize;
 const rows = canvas.height / cellSize;
@@ -69,11 +72,21 @@ function draw() {
 
   ctx.fillStyle = "#0f0";
   snake.forEach(s =>
-    ctx.fillRect(s.x * cellSize, s.y * cellSize, cellSize, cellSize)
+    ctx.fillRect(
+      s.x * cellSize,
+      s.y * cellSize,
+      cellSize,
+      cellSize
+    )
   );
 
   ctx.fillStyle = "#f00";
-  ctx.fillRect(food.x * cellSize, food.y * cellSize, cellSize, cellSize);
+  ctx.fillRect(
+    food.x * cellSize,
+    food.y * cellSize,
+    cellSize,
+    cellSize
+  );
 }
 
 function endGame() {
@@ -82,11 +95,10 @@ function endGame() {
   overlay.classList.remove("hidden");
 }
 
-/* -------- CONTROLS (FIXED) -------- */
+/* -------- CONTROLS -------- */
 
 document.addEventListener("keydown", e => {
   e.preventDefault();
-
   const key = e.key.toLowerCase();
 
   if ((key === "w" || key === "arrowup") && direction.y === 0)
@@ -128,5 +140,6 @@ async function loadProjects() {
 }
 
 loadProjects();
+
 
 

@@ -3,23 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Khayne | lokiscripts</title>
+
+  <title>Khayne | Junior Developer Portfolio</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Junior Python and Java developer portfolio showcasing projects, JavaScript games, and clean scalable code.">
+  <meta name="author" content="Khayne (lokiscripts22)">
+
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Preload video -->
+  <link rel="preload" as="video" href="videos/beach-backdrop.mp4" type="video/mp4">
 </head>
+
 <body>
 
 <header class="hero">
-  <video class="hero-video" autoplay muted loop playsinline preload="auto">
-    <source src="videos/beach-backdrop.mp4" type="video/mp4" />
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source src="videos/beach-backdrop.mp4" type="video/mp4">
   </video>
 
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <h1>Hi, I'm Khayne</h1>
-    <h2 class="subtitle">lokiscripts</h2>
+    <h1>Hi, I’m Khayne</h1>
+    <h2>lokiscripts22</h2>
 
-    <img src="images/profile.png" alt="Profile Picture" class="profile-pic" />
+    <img
+      src="images/profile.png"
+      alt="Profile picture of Khayne"
+      class="profile-pic"
+      loading="lazy"
+    >
 
     <div class="bio-card">
       <p><strong>Junior Python & Java Developer</strong></p>
@@ -27,7 +43,9 @@
       <p>Focused on clean, scalable, maintainable code.</p>
       <p>
         GitHub:
-        <a href="https://github.com/lokiscripts22" target="_blank">
+        <a href="https://github.com/lokiscripts22"
+           target="_blank"
+           rel="noopener noreferrer">
           github.com/lokiscripts22
         </a>
       </p>
@@ -55,13 +73,23 @@
 
 <section id="snake-game">
   <h2>Snake Game</h2>
-  <p>Classic JavaScript canvas game (WASD / Arrow Keys)</p>
+  <p>JavaScript canvas game (WASD / Arrow Keys)</p>
+
   <button id="start-snake">Start Snake</button>
-  <canvas id="snake-canvas" width="400" height="400"></canvas>
+
+  <div class="snake-wrapper">
+    <canvas
+      id="snake-canvas"
+      width="400"
+      height="400"
+      aria-label="Snake game canvas">
+      Snake game canvas not supported.
+    </canvas>
+  </div>
 </section>
 
 <footer>
-  <p>© 2026 Khayne — lokiscripts</p>
+  <p>© 2026 Khayne — lokiscripts22</p>
 </footer>
 
 <script src="script.js"></script>

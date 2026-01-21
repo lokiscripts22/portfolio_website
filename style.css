@@ -1,139 +1,154 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, sans-serif;
-}
-
 body {
-  background: #111;
-  color: #fff;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  color: #333;
 }
 
-/* HERO */
+/* ---------- HERO ---------- */
 
 .hero {
   position: relative;
   height: 100vh;
   overflow: hidden;
+  color: white;
 }
 
 .hero-video {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 100%;
-  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
   transform: translate(-50%, -50%);
   object-fit: cover;
-  z-index: -2;
+  z-index: 1;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: -1;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 2;
 }
 
 .hero-content {
-  padding: 4rem 2rem;
-  max-width: 900px;
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 3rem 1rem;
 }
 
-.subtitle {
-  color: #ccc;
-  margin-bottom: 2rem;
+.hero-content h1 {
+  margin-bottom: 0.2rem;
 }
 
-/* PROFILE */
+.hero-content h2 {
+  margin-top: 0;
+  font-weight: normal;
+  opacity: 0.9;
+}
+
+/* ---------- PROFILE ---------- */
 
 .profile-pic {
   width: 180px;
   height: 180px;
-  object-fit: cover;
   border-radius: 50%;
-  margin: 1.5rem 0;
-  border: 3px solid #fff;
+  border: 4px solid white;
+  object-fit: cover;
+  margin-top: 1rem;
 }
 
 .bio-card,
 .skills-card {
-  background: rgba(0, 0, 0, 0.65);
-  padding: 1.2rem;
-  border-radius: 12px;
-  margin-top: 1rem;
-  max-width: 420px;
+  background: #ffffff;
+  color: #333;
+  max-width: 340px;
+  margin: 1.3rem auto;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
 .bio-card a {
-  color: #4da3ff;
+  color: #0066cc;
   text-decoration: none;
 }
 
 .skills-icons {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.5rem;
-  margin-top: 0.5rem;
 }
 
 .skill {
-  background: #222;
-  padding: 0.4rem 0.7rem;
-  border-radius: 8px;
+  background: #eaeaea;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  font-weight: bold;
 }
 
-/* PROJECTS */
+/* ---------- PROJECTS ---------- */
 
 #projects {
-  background: #1c1c1c;
-  padding: 4rem 2rem;
+  background: #2b2b2b;
+  color: white;
+  padding: 3rem 1rem;
+  text-align: center;
 }
 
 #project-list {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
-  margin-top: 2rem;
 }
 
 .project-card {
-  background: #262626;
+  background: #3a3a3a;
+  width: 240px;
   padding: 1rem;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .project-card a {
-  color: #4da3ff;
+  color: #66b3ff;
   text-decoration: none;
 }
 
-/* SNAKE */
+/* ---------- SNAKE ---------- */
 
 #snake-game {
-  padding: 4rem 2rem;
+  padding: 3rem 1rem;
   text-align: center;
+}
+
+.snake-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
 }
 
 #snake-canvas {
-  background: #000;
-  margin-top: 1rem;
-  border: 2px solid #444;
+  background: #111;
+  border-radius: 8px;
+  border: 3px solid #333;
 }
 
 button {
-  margin-top: 1rem;
   padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 8px;
+  font-size: 1rem;
   cursor: pointer;
 }
 
-/* FOOTER */
+/* ---------- FOOTER ---------- */
 
 footer {
-  padding: 2rem;
+  background: #1e1e1e;
+  color: white;
   text-align: center;
-  color: #888;
+  padding: 1rem;
 }
 

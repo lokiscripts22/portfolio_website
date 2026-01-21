@@ -1,5 +1,10 @@
+/* ===============================
+   SNAKE GAME (CLEAN FINAL)
+   =============================== */
+
 const canvas = document.getElementById("snake-canvas");
 const ctx = canvas.getContext("2d");
+
 const startBtn = document.getElementById("start-snake");
 
 const cellSize = 20;
@@ -12,7 +17,7 @@ let food = {};
 let loop = null;
 let running = false;
 
-/* SNAKE */
+/* ---------- GAME SETUP ---------- */
 
 function startGame() {
   snake = [{ x: 10, y: 10 }];
@@ -31,6 +36,8 @@ function placeFood() {
   };
 }
 
+/* ---------- GAME LOOP ---------- */
+
 function update() {
   if (!running) return;
 
@@ -39,13 +46,13 @@ function update() {
     y: snake[0].y + direction.y
   };
 
+  // Collision detection
   if (
     head.x < 0 || head.x >= cols ||
     head.y < 0 || head.y >= rows ||
-    snake.some(s => s.x === head.x && s.y === head.y)
+    snake.some(segment => segment.x === head.x && segment.y === head.y)
   ) {
-    running = false;
-    clearInterval(loop);
+    endGame();
     return;
   }
 
@@ -60,59 +67,102 @@ function update() {
   draw();
 }
 
+/* ---------- DRAW ---------- */
+
 function draw() {
   ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.fillStyle = "#0f0";
-  snake.forEach(s =>
-    ctx.fillRect(s.x * cellSize, s.y * cellSize, cellSize, cellSize)
-  );
+  snake.forEach(segment => {
+    ctx.fillRect(
+      segment.x * cellSize,
+      segment.y * cellSize,
+      cellSize,
+      cellSize
+    );
+  });
 
   ctx.fillStyle = "#f00";
-  ctx.fillRect(food.x * cellSize, food.y * cellSize, cellSize, cellSize);
+  ctx.fillRect(
+    food.x * cellSize,
+    food.y * cellSize,
+    cellSize,
+    cellSize
+  );
 }
+
+/* ---------- END GAME ---------- */
+
+function endGame() {
+  running = false;
+  clearInterval(loop);
+}
+
+/* ---------- CONTROLS ---------- */
 
 document.addEventListener("keydown", e => {
   const key = e.key.toLowerCase();
 
-  if ((key === "w" || key === "arrowup") && direction.y === 0)
+  if ((key === "w" || key === "arrowup") && direction.y === 0) {
     direction = { x: 0, y: -1 };
+  }
 
-  if ((key === "s" || key === "arrowdown") && direction.y === 0)
+  if ((key === "s" || key === "arrowdown") && direction.y === 0) {
     direction = { x: 0, y: 1 };
+  }
 
-  if ((key === "a" || key === "arrowleft") && direction.x === 0)
+  if ((key === "a" || key === "arrowleft") && direction.x === 0) {
     direction = { x: -1, y: 0 };
+  }
 
-  if ((key === "d" || key === "arrowright") && direction.x === 0)
+  if ((key === "d" || key === "arrowright") && direction.x === 0) {
     direction = { x: 1, y: 0 };
+  }
 });
 
-startBtn.onclick = startGame;
+startBtn.addEventListener("click", startGame);
 
-/* PROJECTS */
+/* ===============================
+   PROJECTS (GITHUB API)
+   =============================== */
 
 async function loadProjects() {
   const username = "lokiscripts22";
-  const res = await fetch(`https://api.github.com/users/${username}/repos`);
-  const repos = await res.json();
 
-  const list = document.getElementById("project-list");
-  list.innerHTML = "";
+  try {
+    const res = await fetch(
+      `https://api.github.com/users/${username}/repos?sort=updated`
+    );
+    const repos = await res.json();
 
-  repos.forEach(repo => {
-    const card = document.createElement("div");
-    card.className = "project-card";
-    card.innerHTML = `
-      <h3>${repo.name}</h3>
-      <p>${repo.description || "No description"}</p>
-      <a href="${repo.html_url}" target="_blank">View on GitHub</a>
-    `;
-    list.appendChild(card);
-  });
+    const list = document.getElementById("project-list");
+    list.innerHTML = "";
+
+    repos.forEach(repo => {
+      if (repo.fork) return;
+
+      const card = document.createElement("div");
+      card.className = "project-card";
+
+      card.innerHTML = `
+        <h3>${repo.name}</h3>
+        <p>${repo.description || "No description provided."}</p>
+        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">
+          View on GitHub
+        </a>
+      `;
+
+      list.appendChild(card);
+    });
+
+  } catch (err) {
+    document.getElementById("project-list").innerHTML =
+      "<p>Unable to load projects.</p>";
+  }
 }
 
 loadProjects();
+
 
 

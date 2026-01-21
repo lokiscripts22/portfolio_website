@@ -1,33 +1,4 @@
-// ===== GitHub Projects Loader =====
-async function loadProjects() {
-  const username = "lokiscripts22";
-
-  try {
-    const response = await fetch(`https://api.github.com/users/${username}/repos`);
-    const repos = await response.json();
-
-    const projectList = document.getElementById("project-list");
-    projectList.innerHTML = "";
-
-    repos.forEach(repo => {
-      const card = document.createElement("div");
-      card.className = "project-card";
-      card.innerHTML = `
-        <h3>${repo.name}</h3>
-        <p>${repo.description || "No description provided."}</p>
-        <a href="${repo.html_url}" target="_blank">View on GitHub</a>
-      `;
-      projectList.appendChild(card);
-    });
-
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-loadProjects();
-
-// ===== Snake Game =====
+// ================= SNAKE GAME =================
 const canvas = document.getElementById("snake-canvas");
 const ctx = canvas.getContext("2d");
 
@@ -35,74 +6,98 @@ const startBtn = document.getElementById("start-snake");
 const restartBtn = document.getElementById("restart-snake");
 const overlay = document.getElementById("snake-overlay");
 
-const gridSize = 20;
-const tileCount = canvas.width / gridSize;
+const box = 20;
+const rows = canvas.width / box;
 
-let snake, direction, food, loop;
+let snake = [];
+let dir = { x: 0, y: 0 };
+let food = {};
+let game = null;
+let started = false;
 
+// ---------------- Controls ----------------
+document.addEventListener("keydown", e => {
+  if (!started) return;
+
+  if (e.key === "ArrowUp" && dir.y === 0) dir = { x: 0, y: -1 };
+  if (e.key === "ArrowDown" && dir.y === 0) dir = { x: 0, y: 1 };
+  if (e.key === "ArrowLeft" && dir.x === 0) dir = { x: -1, y: 0 };
+  if (e.key === "ArrowRight" && dir.x === 0) dir = { x: 1, y: 0 };
+});
+
+// ---------------- Game Start ----------------
 startBtn.onclick = startGame;
 restartBtn.onclick = startGame;
 
 function startGame() {
+  clearInterval(game);
   overlay.classList.add("hidden");
-  clearInterval(loop);
 
-  snake = [{ x: 10, y: 10 }];
-  direction = { x: 1, y: 0 };
-  food = randomFood();
+  snake = [{ x: 9, y: 9 }];
+  dir = { x: 1, y: 0 };
+  food = spawnFood();
+  started = true;
 
-  document.onkeydown = changeDirection;
-  loop = setInterval(update, 150);
+  game = setInterval(draw, 140);
 }
 
-function update() {
+// ---------------- Draw Loop ----------------
+function draw() {
   ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   const head = {
-    x: snake[0].x + direction.x,
-    y: snake[0].y + direction.y
+    x: snake[0].x + dir.x,
+    y: snake[0].y + dir.y
   };
 
+  // Wall collision
   if (
-    head.x < 0 || head.y < 0 ||
-    head.x >= tileCount || head.y >= tileCount ||
-    snake.some(s => s.x === head.x && s.y === head.y)
+    head.x < 0 ||
+    head.y < 0 ||
+    head.x >= rows ||
+    head.y >= rows ||
+    collision(head, snake)
   ) {
-    clearInterval(loop);
-    overlay.classList.remove("hidden");
+    gameOver();
     return;
   }
 
   snake.unshift(head);
 
+  // Eat food
   if (head.x === food.x && head.y === food.y) {
-    food = randomFood();
+    food = spawnFood();
   } else {
     snake.pop();
   }
 
-  ctx.fillStyle = "#22c55e";
+  // Draw snake
+  ctx.fillStyle = "#0f0";
   snake.forEach(s =>
-    ctx.fillRect(s.x * gridSize, s.y * gridSize, gridSize, gridSize)
+    ctx.fillRect(s.x * box, s.y * box, box - 1, box - 1)
   );
 
-  ctx.fillStyle = "#ef4444";
-  ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
+  // Draw food
+  ctx.fillStyle = "#f00";
+  ctx.fillRect(food.x * box, food.y * box, box, box);
 }
 
-function randomFood() {
+// ---------------- Helpers ----------------
+function spawnFood() {
   return {
-    x: Math.floor(Math.random() * tileCount),
-    y: Math.floor(Math.random() * tileCount)
+    x: Math.floor(Math.random() * rows),
+    y: Math.floor(Math.random() * rows)
   };
 }
 
-function changeDirection(e) {
-  if (e.key === "ArrowUp" && direction.y === 0) direction = { x: 0, y: -1 };
-  if (e.key === "ArrowDown" && direction.y === 0) direction = { x: 0, y: 1 };
-  if (e.key === "ArrowLeft" && direction.x === 0) direction = { x: -1, y: 0 };
-  if (e.key === "ArrowRight" && direction.x === 0) direction = { x: 1, y: 0 };
+function collision(head, body) {
+  return body.some(seg => seg.x === head.x && seg.y === head.y);
 }
 
+function gameOver() {
+  clearInterval(game);
+  started = false;
+  overlay.classList.remove("hidden");
+}
 

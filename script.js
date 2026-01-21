@@ -1,192 +1,122 @@
-// ================== DOM ELEMENTS ==================
-const playBtn = document.getElementById("play-btn");
-const closeBtn = document.getElementById("close-btn");
-const gameContainer = document.getElementById("game-container");
-const canvas = document.getElementById("snake-canvas");
-const projectList = document.getElementById("project-list");
+const canvas = document.getElementById("game-canvas");
+const ctx = canvas.getContext("2d");
+const overlay = document.getElementById("overlay");
+const overlayText = document.getElementById("overlay-text");
+const startBtn = document.getElementById("start-btn");
+const gameMenu = document.getElementById("game-menu");
 
-let ctx = canvas.getContext("2d");
+let currentGame = null;
+let interval = null;
 
-// ================== GAME SETTINGS ==================
-const cellSize = 20;
-const rows = 20;
-const cols = 20;
-const speed = 150;
-
-let snake = [];
-let direction = { x: 0, y: 0 };
-let food = {};
-let gameInterval = null;
-let gameRunning = false;
-
-// ================== DRAGGING ==================
-let isDragging = false;
-let dragOffsetX = 0;
-let dragOffsetY = 0;
-
-gameContainer.addEventListener("mousedown", e => {
-    isDragging = true;
-    dragOffsetX = e.clientX - gameContainer.offsetLeft;
-    dragOffsetY = e.clientY - gameContainer.offsetTop;
+// ===== BUTTONS =====
+document.querySelectorAll("[data-game]").forEach(btn => {
+  btn.onclick = () => loadGame(btn.dataset.game);
 });
 
-document.addEventListener("mouseup", () => isDragging = false);
+startBtn.onclick = () => startGame();
 
-document.addEventListener("mousemove", e => {
-    if (!isDragging) return;
-    gameContainer.style.left = `${e.clientX - dragOffsetX}px`;
-    gameContainer.style.top = `${e.clientY - dragOffsetY}px`;
-});
-
-// ================== GAME CONTROLS ==================
-playBtn.addEventListener("click", () => {
-    openGame();
-});
-
-closeBtn.addEventListener("click", () => {
-    closeGame();
-});
-
-document.addEventListener("keydown", e => {
-    if (e.key === "Escape") closeGame();
-});
-
-// ================== GAME FUNCTIONS ==================
-function openGame() {
-    gameContainer.classList.remove("hidden");
-
-    canvas.width = cols * cellSize;
-    canvas.height = rows * cellSize;
-
-    // center game window if first open
-    gameContainer.style.left = "320px";
-    gameContainer.style.top = "120px";
-
-    startGame();
+// ===== LOAD GAME =====
+function loadGame(game) {
+  clearInterval(interval);
+  currentGame = game;
+  gameMenu.style.display = "none";
+  canvas.style.display = "block";
+  overlay.classList.remove("hidden");
+  overlayText.textContent = "Press Start";
 }
 
-function closeGame() {
-    stopGame();
-    gameContainer.classList.add("hidden");
-}
-
+// ===== START GAME =====
 function startGame() {
-    snake = [{ x: 10, y: 10 }];
-    direction = { x: 0, y: 0 };
-    placeFood();
+  overlay.classList.add("hidden");
 
-    gameRunning = true;
-    document.addEventListener("keydown", changeDirection);
-    gameInterval = setInterval(gameLoop, speed);
+  if (currentGame === "snake") snakeGame();
+  if (currentGame === "pong") pongGame();
+  if (currentGame === "invaders") invadersGame();
 }
 
-function stopGame() {
-    gameRunning = false;
-    clearInterval(gameInterval);
-    document.removeEventListener("keydown", changeDirection);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+// ===== GAME OVER =====
+function gameOver() {
+  clearInterval(interval);
+  overlayText.textContent = "You Died";
+  overlay.classList.remove("hidden");
 }
 
-function gameLoop() {
-    if (!gameRunning) return;
-
-    const head = {
-        x: snake[0].x + direction.x,
-        y: snake[0].y + direction.y
-    };
-
-    // collision
-    if (
-        head.x < 0 || head.x >= cols ||
-        head.y < 0 || head.y >= rows ||
-        snake.some(seg => seg.x === head.x && seg.y === head.y)
-    ) {
-        stopGame();
-        alert("Game Over!");
-        return;
-    }
-
+// ================= SNAKE =================
+function snakeGame() {
+  let snake = [{x:10,y:10}], dir={x:1,y:0}, food={x:5,y:5};
+  interval = setInterval(() => {
+    ctx.fillStyle="#111"; ctx.fillRect(0,0,420,420);
+    const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+    if(head.x<0||head.y<0||head.x>20||head.y>20) return gameOver();
     snake.unshift(head);
+    if(head.x===food.x&&head.y===food.y) food={x:Math.random()*20|0,y:Math.random()*20|0};
+    else snake.pop();
+    ctx.fillStyle="#22c55e";
+    snake.forEach(s=>ctx.fillRect(s.x*20,s.y*20,20,20));
+    ctx.fillStyle="#ef4444";
+    ctx.fillRect(food.x*20,food.y*20,20,20);
+  },150);
 
-    if (head.x === food.x && head.y === food.y) {
-        placeFood();
-    } else {
-        snake.pop();
-    }
-
-    drawGame();
+  document.onkeydown=e=>{
+    if(e.key==="ArrowUp")dir={x:0,y:-1};
+    if(e.key==="ArrowDown")dir={x:0,y:1};
+    if(e.key==="ArrowLeft")dir={x:-1,y:0};
+    if(e.key==="ArrowRight")dir={x:1,y:0};
+  };
 }
 
-function drawGame() {
-    ctx.fillStyle = "#111";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+// ================= PONG =================
+function pongGame() {
+  let y=180, by=200, bx=200, vy=3, vx=3;
+  interval=setInterval(()=>{
+    ctx.fillStyle="#000"; ctx.fillRect(0,0,420,420);
+    by+=vy; bx+=vx;
+    if(by<0||by>410) vy*=-1;
+    if(bx<10&&by>y&&by<y+80) vx*=-1;
+    if(bx>420) return gameOver();
+    ctx.fillStyle="#fff";
+    ctx.fillRect(5,y,10,80);
+    ctx.beginPath(); ctx.arc(bx,by,6,0,Math.PI*2); ctx.fill();
+  },16);
 
-    ctx.fillStyle = "#22c55e";
-    snake.forEach(seg =>
-        ctx.fillRect(
-            seg.x * cellSize,
-            seg.y * cellSize,
-            cellSize,
-            cellSize
-        )
-    );
-
-    ctx.fillStyle = "#ef4444";
-    ctx.fillRect(
-        food.x * cellSize,
-        food.y * cellSize,
-        cellSize,
-        cellSize
-    );
+  document.onmousemove=e=> y=e.clientY-canvas.getBoundingClientRect().top-40;
 }
 
-function placeFood() {
-    food = {
-        x: Math.floor(Math.random() * cols),
-        y: Math.floor(Math.random() * rows)
-    };
+// ================= INVADERS =================
+function invadersGame() {
+  let level=1, player=200, bullets=[], enemies=[];
+  function spawn() {
+    enemies=[];
+    for(let i=0;i<level*5;i++) enemies.push({x:(i%5)*60+50,y:Math.floor(i/5)*40});
+  }
+  spawn();
+
+  interval=setInterval(()=>{
+    ctx.fillStyle="#000"; ctx.fillRect(0,0,420,420);
+    ctx.fillStyle="#0f0"; ctx.fillRect(player,390,30,10);
+
+    bullets.forEach(b=>b.y-=5);
+    bullets.forEach(b=>ctx.fillRect(b.x,b.y,4,8));
+
+    enemies.forEach(e=>e.y+=0.1*level);
+    enemies.forEach(e=>ctx.fillRect(e.x,e.y,30,20));
+
+    enemies=enemies.filter(e=>{
+      bullets.forEach(b=>{
+        if(b.x>e.x&&b.x<e.x+30&&b.y>e.y&&b.y<e.y+20){e.hit=true;}
+      });
+      return !e.hit;
+    });
+
+    if(enemies.some(e=>e.y>380)) return gameOver();
+    if(enemies.length===0){ level++; spawn(); }
+  },30);
+
+  document.onkeydown=e=>{
+    if(e.key==="ArrowLeft")player-=10;
+    if(e.key==="ArrowRight")player+=10;
+    if(e.key===" ")bullets.push({x:player+14,y:380});
+  };
 }
-
-function changeDirection(e) {
-    const key = e.key.toLowerCase();
-
-    if ((key === "w" || key === "arrowup") && direction.y === 0)
-        direction = { x: 0, y: -1 };
-    if ((key === "s" || key === "arrowdown") && direction.y === 0)
-        direction = { x: 0, y: 1 };
-    if ((key === "a" || key === "arrowleft") && direction.x === 0)
-        direction = { x: -1, y: 0 };
-    if ((key === "d" || key === "arrowright") && direction.x === 0)
-        direction = { x: 1, y: 0 };
-}
-
-// ================== GITHUB PROJECT LOADER ==================
-async function loadProjects() {
-    const username = "lokiscripts22";
-
-    try {
-        const res = await fetch(`https://api.github.com/users/${username}/repos`);
-        const repos = await res.json();
-
-        projectList.innerHTML = "";
-
-        repos.forEach(repo => {
-            const card = document.createElement("div");
-            card.className = "project-card";
-            card.innerHTML = `
-                <h3>${repo.name}</h3>
-                <p>${repo.description || "No description provided."}</p>
-                <a href="${repo.html_url}" target="_blank">View on GitHub</a>
-            `;
-            projectList.appendChild(card);
-        });
-
-    } catch (err) {
-        projectList.innerHTML = "<p>Failed to load projects.</p>";
-        console.error(err);
-    }
-}
-
-loadProjects();
 
 

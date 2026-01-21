@@ -1,5 +1,3 @@
-/* ---------- SNAKE GAME ---------- */
-
 const canvas = document.getElementById("snake-canvas");
 const ctx = canvas.getContext("2d");
 const startBtn = document.getElementById("start-snake");
@@ -44,7 +42,8 @@ function update() {
     head.y < 0 || head.y >= rows ||
     snake.some(s => s.x === head.x && s.y === head.y)
   ) {
-    endGame();
+    running = false;
+    clearInterval(loop);
     return;
   }
 
@@ -71,13 +70,6 @@ function draw() {
   ctx.fillStyle = "#f00";
   ctx.fillRect(food.x * cellSize, food.y * cellSize, cellSize, cellSize);
 }
-
-function endGame() {
-  running = false;
-  clearInterval(loop);
-}
-
-/* ---------- CONTROLS ---------- */
 
 document.addEventListener("keydown", e => {
   const key = e.key.toLowerCase();
@@ -120,5 +112,6 @@ async function loadProjects() {
 }
 
 loadProjects();
+
 
 

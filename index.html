@@ -3,23 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loki | Portfolio</title>
+  <title>Khayne | lokiscripts</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<!-- HERO / HEADER -->
 <header class="hero">
-
-  <video class="hero-video" autoplay muted loop playsinline>
+  <video
+    class="hero-video"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+  >
     <source src="videos/beach-backdrop.mp4" type="video/mp4">
-    Your browser does not support the video tag.
   </video>
 
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <h1>Hi, I'm Loki</h1>
+    <h1>Hi, I'm Khayne</h1>
+    <h2 class="subtitle">lokiscripts</h2>
 
     <img src="images/profile.png" alt="Profile Picture" class="profile-pic">
 
@@ -27,6 +32,12 @@
       <p><strong>Junior Python & Java Developer</strong></p>
       <p>Building automations and smart systems.</p>
       <p>Focused on clean, scalable, maintainable code.</p>
+      <p>
+        GitHub:
+        <a href="https://github.com/lokiscripts22" target="_blank">
+          github.com/lokiscripts22
+        </a>
+      </p>
     </div>
 
     <div class="skills-card">
@@ -40,10 +51,8 @@
       </div>
     </div>
   </div>
-
 </header>
 
-<!-- PROJECTS -->
 <section id="projects">
   <h2>Projects</h2>
   <div id="project-list">
@@ -51,26 +60,20 @@
   </div>
 </section>
 
-<!-- SNAKE (SHOWCASE, NOT MAIN FEATURE) -->
 <section id="snake-game">
   <h2>Snake Game</h2>
   <p>Classic JavaScript canvas game (WASD / Arrow Keys)</p>
-
   <button id="start-snake">Start Snake</button>
-
-  <div class="snake-wrapper">
-    <canvas id="snake-canvas" width="400" height="400"></canvas>
-  </div>
+  <canvas id="snake-canvas" width="400" height="400"></canvas>
 </section>
 
 <footer>
-  <p>Contact: email@example.com</p>
+  <p>© 2026 Khayne — lokiscripts</p>
 </footer>
 
-<!-- CACHE-BUSTED SCRIPT -->
-<script src="script.js?v=20260121"></script>
-
+<script src="script.js"></script>
 </body>
 </html>
+
 
 

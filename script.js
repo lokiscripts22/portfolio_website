@@ -12,6 +12,8 @@ let food = {};
 let loop = null;
 let running = false;
 
+/* SNAKE */
+
 function startGame() {
   snake = [{ x: 10, y: 10 }];
   direction = { x: 1, y: 0 };
@@ -89,7 +91,7 @@ document.addEventListener("keydown", e => {
 
 startBtn.onclick = startGame;
 
-/* ---------- PROJECTS ---------- */
+/* PROJECTS */
 
 async function loadProjects() {
   const username = "lokiscripts22";
@@ -112,6 +114,5 @@ async function loadProjects() {
 }
 
 loadProjects();
-
 
 

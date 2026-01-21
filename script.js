@@ -17,12 +17,14 @@ function stopAllGames() {
    KEY HANDLING (SAFE)
 ================================ */
 const keys = {};
+
 document.addEventListener("keydown", e => {
   if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," "].includes(e.key)) {
     e.preventDefault();
   }
   keys[e.key.toLowerCase()] = true;
 });
+
 document.addEventListener("keyup", e => {
   keys[e.key.toLowerCase()] = false;
 });
@@ -51,7 +53,7 @@ async function loadProjects() {
 loadProjects();
 
 /* ===============================
-   SNAKE (STABLE)
+   SNAKE (UNCHANGED & STABLE)
 ================================ */
 const snakeCanvas = document.getElementById("snake-canvas");
 const sctx = snakeCanvas.getContext("2d");
@@ -113,7 +115,7 @@ function updateSnake() {
 }
 
 /* ===============================
-   PONG (AI + FIXED BALL)
+   PONG (UNCHANGED & STABLE)
 ================================ */
 const pongCanvas = document.getElementById("pong-canvas");
 const pctx = pongCanvas.getContext("2d");
@@ -165,31 +167,30 @@ function updatePong() {
 }
 
 /* ===============================
-   SPACE INVADERS (DROP-IN + FAIR)
+   SPACE INVADERS (FIXED)
 ================================ */
 const invCanvas = document.getElementById("invaders-canvas");
 const ictx = invCanvas.getContext("2d");
 document.getElementById("start-invaders").onclick = startInvaders;
 
 let level, playerX, bullets, invaders;
-let invDir, invSpeed, dropTargetY;
+let invDir, invSpeed;
 
 function startInvaders() {
   stopAllGames();
   activeGame = "invaders";
   level = 1;
-  setupLevel();
+  setupInvaders();
   invLoop = setInterval(updateInvaders, 30);
 }
 
-function setupLevel() {
+function setupInvaders() {
   bullets = [];
   invaders = [];
   playerX = invCanvas.width / 2;
 
   invDir = 1;
-  invSpeed = 0.3 + level * 0.15;
-  dropTargetY = 60;
+  invSpeed = 0.4 + level * 0.2;
 
   const rows = Math.min(2 + level, 5);
   const cols = 6;
@@ -198,8 +199,7 @@ function setupLevel() {
     for (let c = 0; c < cols; c++) {
       invaders.push({
         x: 60 + c * 50,
-        y: -r * 40,
-        landed: false
+        y: -100 - r * 40
       });
     }
   }
@@ -213,7 +213,7 @@ function updateInvaders() {
   playerX = Math.max(20, Math.min(invCanvas.width - 20, playerX));
 
   if ((keys[" "] || keys["space"]) && bullets.length < 3) {
-    bullets.push({ x: playerX, y: invCanvas.height - 40 });
+    bullets.push({ x: playerX, y: invCanvas.height - 45 });
     keys[" "] = false;
   }
 
@@ -221,15 +221,14 @@ function updateInvaders() {
   bullets = bullets.filter(b => b.y > 0);
 
   invaders.forEach(i => {
-    if (!i.landed) {
-      i.y += 1;
-      if (i.y >= dropTargetY) i.landed = true;
+    if (i.y < 60) {
+      i.y += 1.2;
     } else {
       i.x += invSpeed * invDir;
     }
   });
 
-  if (invaders.some(i => i.landed && (i.x < 20 || i.x > invCanvas.width - 40))) {
+  if (invaders.some(i => i.x < 20 || i.x > invCanvas.width - 40)) {
     invDir *= -1;
     invaders.forEach(i => i.y += 10);
   }
@@ -241,7 +240,7 @@ function updateInvaders() {
     ));
   });
 
-  const shipY = invCanvas.height - 35;
+  const shipY = invCanvas.height - 40;
   if (invaders.some(i =>
     i.y + 24 >= shipY &&
     i.x < playerX + 15 &&
@@ -253,7 +252,7 @@ function updateInvaders() {
 
   if (invaders.length === 0) {
     level++;
-    setupLevel();
+    setupInvaders();
   }
 
   ictx.fillStyle = "#111";
@@ -261,9 +260,9 @@ function updateInvaders() {
 
   ictx.fillStyle = "#00ff88";
   ictx.beginPath();
-  ictx.moveTo(playerX, invCanvas.height - 50);
-  ictx.lineTo(playerX - 15, invCanvas.height - 20);
-  ictx.lineTo(playerX + 15, invCanvas.height - 20);
+  ictx.moveTo(playerX, invCanvas.height - 55);
+  ictx.lineTo(playerX - 15, invCanvas.height - 25);
+  ictx.lineTo(playerX + 15, invCanvas.height - 25);
   ictx.closePath();
   ictx.fill();
 

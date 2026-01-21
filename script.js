@@ -27,7 +27,7 @@ document.addEventListener("keyup", e => {
 });
 
 /* ===============================
-   PROJECTS (SAFE)
+   PROJECTS (GITHUB API)
 ================================ */
 async function loadProjects() {
   try {
@@ -172,13 +172,14 @@ function updatePong() {
 }
 
 /* ===============================
-   SPACE INVADERS (FIXED LOSS LOGIC)
+   SPACE INVADERS (FIXED + FAIR)
 ================================ */
 const invCanvas = document.getElementById("invaders-canvas");
 const ictx = invCanvas.getContext("2d");
 document.getElementById("start-invaders").onclick = startInvaders;
 
-let level, playerX, bullets, invaders, invSpeed;
+let level, playerX, bullets, invaders;
+let invSpeed, invDir, invDrop;
 
 function startInvaders() {
   stopAllGames();
@@ -191,14 +192,23 @@ function startInvaders() {
 function initLevel() {
   playerX = invCanvas.width / 2;
   bullets = [];
-  invSpeed = 0.8 + level * 0.35;
-  invaders = [];
 
-  const rows = Math.min(2 + level, 5);
+  invDir = 1;
+  invSpeed = 0.6 + level * 0.25;
+  invDrop = 8;
+
+  invaders = [];
+  const rows = Math.min(3 + level, 6);
+  const cols = 7;
 
   for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < 7; c++) {
-      invaders.push({ x: 40 + c * 45, y: 40 + r * 35 });
+    for (let c = 0; c < cols; c++) {
+      invaders.push({
+        x: 50 + c * 55,
+        y: 40 + r * 35,
+        w: 20,
+        h: 20
+      });
     }
   }
 }
@@ -208,31 +218,33 @@ function updateInvaders() {
 
   if (keys["a"] || keys["arrowleft"]) playerX -= 5;
   if (keys["d"] || keys["arrowright"]) playerX += 5;
-
   playerX = Math.max(20, Math.min(invCanvas.width - 20, playerX));
 
-  if (keys[" "] && bullets.length < 2) {
-    bullets.push({ x: playerX, y: invCanvas.height - 35 });
+  if (keys[" "] && bullets.length < 3) {
+    bullets.push({ x: playerX, y: invCanvas.height - 40 });
     keys[" "] = false;
   }
 
-  invaders.forEach(i => i.x += invSpeed);
+  let hitEdge = false;
+  invaders.forEach(i => {
+    i.x += invSpeed * invDir;
+    if (i.x < 10 || i.x + i.w > invCanvas.width - 10) hitEdge = true;
+  });
 
-  if (invaders.some(i => i.x > invCanvas.width - 25 || i.x < 5)) {
-    invSpeed *= -1;
-    invaders.forEach(i => i.y += 18);
+  if (hitEdge) {
+    invDir *= -1;
+    invaders.forEach(i => i.y += invDrop);
   }
 
-  bullets.forEach(b => b.y -= 7);
+  bullets.forEach(b => b.y -= 6);
   bullets = bullets.filter(b => b.y > 0);
 
-  invaders = invaders.filter(i => {
-    const hit = bullets.some(b =>
-      b.x > i.x && b.x < i.x + 20 &&
-      b.y > i.y && b.y < i.y + 20
-    );
-    return !hit;
-  });
+  invaders = invaders.filter(i =>
+    !bullets.some(b =>
+      b.x > i.x && b.x < i.x + i.w &&
+      b.y > i.y && b.y < i.y + i.h
+    )
+  );
 
   if (invaders.length === 0) {
     level++;
@@ -243,9 +255,8 @@ function updateInvaders() {
     initLevel();
   }
 
-  /* 🔥 FIXED LOSS CONDITION 🔥 */
-  const playerLine = invCanvas.height - 50;
-  if (invaders.some(i => i.y + 20 >= playerLine)) {
+  const shipY = invCanvas.height - 30;
+  if (invaders.some(i => i.y + i.h >= shipY)) {
     stopAllGames();
     return;
   }
@@ -253,17 +264,18 @@ function updateInvaders() {
   ictx.fillStyle = "#111";
   ictx.fillRect(0, 0, invCanvas.width, invCanvas.height);
 
-  /* Player Ship */
-  ictx.fillStyle = "#00ff88";
-  ictx.fillRect(playerX - 15, invCanvas.height - 25, 30, 10);
-  ictx.fillRect(playerX - 6, invCanvas.height - 35, 12, 10);
+  ictx.fillStyle = "#0f0";
+  ictx.beginPath();
+  ictx.moveTo(playerX, shipY);
+  ictx.lineTo(playerX - 15, shipY + 15);
+  ictx.lineTo(playerX + 15, shipY + 15);
+  ictx.closePath();
+  ictx.fill();
 
-  /* Bullets */
   ictx.fillStyle = "#0ff";
-  bullets.forEach(b => ictx.fillRect(b.x - 1, b.y, 3, 8));
+  bullets.forEach(b => ictx.fillRect(b.x - 2, b.y, 5, 10));
 
-  /* Invaders */
   ictx.fillStyle = "#a020f0";
-  invaders.forEach(i => ictx.fillRect(i.x, i.y, 20, 20));
+  invaders.forEach(i => ictx.fillRect(i.x, i.y, i.w, i.h));
 }
 

@@ -1,12 +1,11 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  background: #f2f2f2;
   color: #333;
 }
 
-/* ---------- HERO ---------- */
-
+/* HERO */
 .hero {
   position: relative;
   height: 100vh;
@@ -16,41 +15,31 @@ body {
 
 .hero-video {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  z-index: 1;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
-  z-index: 2;
 }
 
 .hero-content {
   position: relative;
-  z-index: 3;
+  z-index: 2;
   text-align: center;
-  padding: 3rem 1rem;
+  padding: 2rem 1rem;
 }
 
-.hero-content h1 {
-  margin-bottom: 0.2rem;
-}
-
-.hero-content h2 {
-  margin-top: 0;
-  font-weight: normal;
+.username {
   opacity: 0.9;
+  margin-bottom: 1rem;
 }
 
-/* ---------- PROFILE ---------- */
-
+/* PROFILE */
 .profile-pic {
   width: 180px;
   height: 180px;
@@ -61,11 +50,12 @@ body {
 }
 
 .bio-card,
-.skills-card {
-  background: #ffffff;
+.skills-card,
+.lighthouse-card {
+  background: white;
   color: #333;
   max-width: 340px;
-  margin: 1.3rem auto;
+  margin: 1.2rem auto;
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 6px 12px rgba(0,0,0,0.15);
@@ -76,6 +66,7 @@ body {
   text-decoration: none;
 }
 
+/* SKILLS */
 .skills-icons {
   display: flex;
   flex-wrap: wrap;
@@ -90,8 +81,7 @@ body {
   font-weight: bold;
 }
 
-/* ---------- PROJECTS ---------- */
-
+/* PROJECTS */
 #projects {
   background: #2b2b2b;
   color: white;
@@ -118,8 +108,26 @@ body {
   text-decoration: none;
 }
 
-/* ---------- SNAKE ---------- */
+/* LIGHTHOUSE */
+#lighthouse-proof {
+  padding: 3rem 1rem;
+  text-align: center;
+}
 
+.lighthouse-images {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.lighthouse-images img {
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* SNAKE */
 #snake-game {
   padding: 3rem 1rem;
   text-align: center;
@@ -133,8 +141,8 @@ body {
 
 #snake-canvas {
   background: #111;
-  border-radius: 8px;
   border: 3px solid #333;
+  border-radius: 8px;
 }
 
 button {
@@ -143,12 +151,12 @@ button {
   cursor: pointer;
 }
 
-/* ---------- FOOTER ---------- */
-
+/* FOOTER */
 footer {
   background: #1e1e1e;
   color: white;
   text-align: center;
   padding: 1rem;
 }
+
 

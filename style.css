@@ -1,13 +1,14 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  background: #f5f5f5;
+  background-color: #f5f5f5;
   color: #333;
 }
 
+/* ---------- Header ---------- */
 header {
-  background: #222;
-  color: white;
+  background-color: #222;
+  color: #fff;
   padding: 2rem;
   text-align: center;
 }
@@ -16,51 +17,42 @@ header {
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  border: 4px solid white;
+  border: 4px solid #fff;
   object-fit: cover;
 }
 
+/* ---------- Cards ---------- */
 .bio-card,
 .skills-card {
-  background: white;
-  margin: 1rem auto;
+  background-color: #fff;
   padding: 1rem;
+  margin: 1rem auto;
   width: 300px;
   border-radius: 10px;
+  color: #333;
 }
 
 .skills-icons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
   justify-content: center;
+  gap: 0.5rem;
 }
 
 .skill {
-  background: #eee;
-  padding: 0.5rem;
+  background-color: #eaeaea;
+  padding: 0.5rem 0.8rem;
   border-radius: 6px;
+  font-weight: bold;
 }
 
+/* ---------- Sections ---------- */
 section {
+  padding: 2.5rem 1rem;
   text-align: center;
-  padding: 2rem;
 }
 
-#project-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.project-card {
-  background: white;
-  padding: 1rem;
-  width: 220px;
-  border-radius: 8px;
-}
-
+/* ---------- Snake ---------- */
 .snake-wrapper {
   position: relative;
   width: 400px;
@@ -68,16 +60,16 @@ section {
 }
 
 #snake-canvas {
-  background: #111;
-  display: block;
+  background-color: #111;
   border-radius: 10px;
+  display: block;
 }
 
 #snake-overlay {
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.85);
-  color: white;
+  color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,10 +80,43 @@ section {
   display: none !important;
 }
 
-footer {
-  background: #222;
-  color: white;
-  padding: 1rem;
+button {
+  padding: 0.5rem 1.2rem;
+  margin: 0.5rem;
+  cursor: pointer;
 }
 
+/* ---------- Projects ---------- */
+#projects {
+  background-color: #2b2b2b;
+  color: #f1f1f1;
+}
+
+#project-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.project-card {
+  background-color: #3a3a3a;
+  padding: 1rem;
+  width: 220px;
+  border-radius: 8px;
+  color: #f1f1f1;
+}
+
+.project-card a {
+  color: #4da3ff;
+  text-decoration: none;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  background-color: #222;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+}
 

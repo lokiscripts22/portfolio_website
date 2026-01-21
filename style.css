@@ -91,21 +91,6 @@ header {
   border-radius: 10px;
 }
 
-#snake-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.hidden {
-  display: none;
-}
-
 button {
   padding: 0.5rem 1rem;
   margin-top: 1rem;

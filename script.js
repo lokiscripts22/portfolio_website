@@ -92,8 +92,8 @@ function draw() {
 function endGame() {
   running = false;
   clearInterval(loop);
-  overlay.classList.remove("hidden");
 }
+
 
 /* -------- CONTROLS -------- */
 
@@ -115,7 +115,6 @@ document.addEventListener("keydown", e => {
 });
 
 startBtn.onclick = startGame;
-restartBtn.onclick = startGame;
 
 /* -------- PROJECTS -------- */
 

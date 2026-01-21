@@ -1,25 +1,41 @@
-// ========== GITHUB PROJECTS ==========
+// ================= FORCE OVERLAY HIDDEN ON LOAD =================
+document.addEventListener("DOMContentLoaded", () => {
+  const overlay = document.getElementById("snake-overlay");
+  if (overlay) {
+    overlay.style.display = "none";
+  }
+});
+
+// ================= GITHUB PROJECTS =================
 async function loadProjects() {
-  const res = await fetch("https://api.github.com/users/lokiscripts22/repos");
-  const repos = await res.json();
+  try {
+    const response = await fetch(
+      "https://api.github.com/users/lokiscripts22/repos"
+    );
+    const repos = await response.json();
 
-  const list = document.getElementById("project-list");
-  list.innerHTML = "";
+    const projectList = document.getElementById("project-list");
+    projectList.innerHTML = "";
 
-  repos.forEach(repo => {
-    const div = document.createElement("div");
-    div.className = "project-card";
-    div.innerHTML = `
-      <h3>${repo.name}</h3>
-      <p>${repo.description || "No description"}</p>
-      <a href="${repo.html_url}" target="_blank">View</a>
-    `;
-    list.appendChild(div);
-  });
+    repos.forEach(repo => {
+      const card = document.createElement("div");
+      card.className = "project-card";
+      card.innerHTML = `
+        <h3>${repo.name}</h3>
+        <p>${repo.description || "No description"}</p>
+        <a href="${repo.html_url}" target="_blank">View on GitHub</a>
+      `;
+      projectList.appendChild(card);
+    });
+  } catch (err) {
+    console.error(err);
+    document.getElementById("project-list").innerHTML =
+      "<p>Failed to load projects.</p>";
+  }
 }
 loadProjects();
 
-// ========== SNAKE GAME ==========
+// ================= SNAKE GAME =================
 const canvas = document.getElementById("snake-canvas");
 const ctx = canvas.getContext("2d");
 
@@ -30,73 +46,102 @@ const overlay = document.getElementById("snake-overlay");
 const size = 20;
 const tiles = canvas.width / size;
 
-let snake, dir, food, loop, running = false;
+let snake = [];
+let dir = { x: 1, y: 0 };
+let food = {};
+let loop = null;
+let running = false;
 
-startBtn.onclick = start;
-restartBtn.onclick = start;
-
+// ---------- Keyboard Controls ----------
 document.addEventListener("keydown", e => {
   if (!running) return;
+
   if (e.key === "ArrowUp" && dir.y === 0) dir = { x: 0, y: -1 };
   if (e.key === "ArrowDown" && dir.y === 0) dir = { x: 0, y: 1 };
   if (e.key === "ArrowLeft" && dir.x === 0) dir = { x: -1, y: 0 };
   if (e.key === "ArrowRight" && dir.x === 0) dir = { x: 1, y: 0 };
 });
 
-function start() {
+// ---------- Start / Restart ----------
+startBtn.onclick = startGame;
+restartBtn.onclick = startGame;
+
+function startGame() {
   clearInterval(loop);
-  overlay.classList.add("hidden");
+
+  overlay.style.display = "none";
 
   snake = [{ x: 10, y: 10 }];
   dir = { x: 1, y: 0 };
-  food = spawn();
+  food = spawnFood();
   running = true;
 
-  loop = setInterval(update, 150);
+  loop = setInterval(updateGame, 150);
 }
 
-function update() {
+// ---------- Game Loop ----------
+function updateGame() {
   ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+  const head = {
+    x: snake[0].x + dir.x,
+    y: snake[0].y + dir.y
+  };
 
+  // Collision detection
   if (
-    head.x < 0 || head.y < 0 ||
-    head.x >= tiles || head.y >= tiles ||
-    snake.some(s => s.x === head.x && s.y === head.y)
+    head.x < 0 ||
+    head.y < 0 ||
+    head.x >= tiles ||
+    head.y >= tiles ||
+    snake.some(seg => seg.x === head.x && seg.y === head.y)
   ) {
-    die();
+    gameOver();
     return;
   }
 
   snake.unshift(head);
 
+  // Eat food
   if (head.x === food.x && head.y === food.y) {
-    food = spawn();
+    food = spawnFood();
   } else {
     snake.pop();
   }
 
+  // Draw snake
   ctx.fillStyle = "#0f0";
-  snake.forEach(s =>
-    ctx.fillRect(s.x * size, s.y * size, size - 1, size - 1)
-  );
+  snake.forEach(seg => {
+    ctx.fillRect(
+      seg.x * size,
+      seg.y * size,
+      size - 1,
+      size - 1
+    );
+  });
 
+  // Draw food
   ctx.fillStyle = "#f00";
-  ctx.fillRect(food.x * size, food.y * size, size, size);
+  ctx.fillRect(
+    food.x * size,
+    food.y * size,
+    size,
+    size
+  );
 }
 
-function spawn() {
+// ---------- Helpers ----------
+function spawnFood() {
   return {
     x: Math.floor(Math.random() * tiles),
     y: Math.floor(Math.random() * tiles)
   };
 }
 
-function die() {
+function gameOver() {
   clearInterval(loop);
   running = false;
-  overlay.classList.remove("hidden");
+  overlay.style.display = "flex";
 }
 

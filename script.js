@@ -1,35 +1,47 @@
+/* ===============================
+   CANVAS + ELEMENTS
+================================ */
+
 const canvas = document.getElementById("snake-canvas");
 const ctx = canvas.getContext("2d");
 
 const startBtn = document.getElementById("start-snake");
-const restartBtn = document.getElementById("restart-snake");
-const overlay = document.getElementById("snake-overlay");
 
-// hide death overlay on load
-overlay.classList.add("hidden");
+/* ===============================
+   GAME CONSTANTS
+================================ */
 
 const cellSize = 20;
 const cols = canvas.width / cellSize;
 const rows = canvas.height / cellSize;
 
+/* ===============================
+   GAME STATE
+================================ */
+
 let snake = [];
-let direction = { x: 1, y: 0 }; // START MOVING
+let direction = { x: 1, y: 0 };
 let food = {};
 let loop = null;
 let running = false;
 
-/* -------- SNAKE GAME -------- */
+/* ===============================
+   GAME SETUP
+================================ */
 
 function startGame() {
   snake = [{ x: 10, y: 10 }];
   direction = { x: 1, y: 0 };
   placeFood();
-  overlay.classList.add("hidden");
   running = true;
 
   clearInterval(loop);
   loop = setInterval(update, 120);
 }
+
+/* ===============================
+   FOOD
+================================ */
 
 function placeFood() {
   food = {
@@ -37,6 +49,10 @@ function placeFood() {
     y: Math.floor(Math.random() * rows)
   };
 }
+
+/* ===============================
+   GAME LOOP
+================================ */
 
 function update() {
   if (!running) return;
@@ -46,6 +62,7 @@ function update() {
     y: snake[0].y + direction.y
   };
 
+  // Collision detection
   if (
     head.x < 0 || head.x >= cols ||
     head.y < 0 || head.y >= rows ||
@@ -65,6 +82,10 @@ function update() {
 
   draw();
 }
+
+/* ===============================
+   RENDER
+================================ */
 
 function draw() {
   ctx.fillStyle = "#111";
@@ -89,16 +110,20 @@ function draw() {
   );
 }
 
+/* ===============================
+   GAME OVER (NO OVERLAY)
+================================ */
+
 function endGame() {
   running = false;
   clearInterval(loop);
 }
 
-
-/* -------- CONTROLS -------- */
+/* ===============================
+   CONTROLS (WASD + ARROWS)
+================================ */
 
 document.addEventListener("keydown", e => {
-  e.preventDefault();
   const key = e.key.toLowerCase();
 
   if ((key === "w" || key === "arrowup") && direction.y === 0)
@@ -114,9 +139,15 @@ document.addEventListener("keydown", e => {
     direction = { x: 1, y: 0 };
 });
 
+/* ===============================
+   START BUTTON
+================================ */
+
 startBtn.onclick = startGame;
 
-/* -------- PROJECTS -------- */
+/* ===============================
+   PROJECTS (UNCHANGED)
+================================ */
 
 async function loadProjects() {
   const username = "lokiscripts22";
@@ -139,6 +170,4 @@ async function loadProjects() {
 }
 
 loadProjects();
-
-
 

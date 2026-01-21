@@ -1,107 +1,151 @@
-body {
-  font-family: Arial, sans-serif;
+* {
   margin: 0;
-  background: #f5f5f5;
-  color: #333;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
 }
 
+body {
+  background: #0e0e0e;
+  color: #eaeaea;
+  line-height: 1.6;
+}
+
+/* ---------- HEADER ---------- */
+
 header {
-  background: #222;
-  color: white;
   text-align: center;
-  padding: 2rem;
+  padding: 4rem 1rem 3rem;
 }
 
 .profile-pic {
   width: 180px;
   height: 180px;
-  border-radius: 50%;
-  border: 4px solid white;
   object-fit: cover;
+  border-radius: 50%;
+  margin: 1.5rem 0;
+  border: 3px solid #444;
 }
 
-.bio-card,
+.bio-card {
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  background: #1a1a1a;
+  padding: 1.2rem;
+  border-radius: 12px;
+}
+
 .skills-card {
-  background: white;
-  color: #333;
-  max-width: 320px;
-  margin: 1rem auto;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .skills-icons {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
 }
 
 .skill {
-  background: #eee;
-  padding: 0.5rem 0.8rem;
-  border-radius: 6px;
-  font-weight: bold;
+  background: #222;
+  padding: 0.5rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
 }
 
-/* PROJECTS */
+/* ---------- SECTIONS ---------- */
+
+section {
+  max-width: 1100px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* ---------- PROJECTS ---------- */
 
 #projects {
-  background: #2b2b2b;
-  color: white;
-  padding: 3rem 2rem;
-  text-align: center;
+  background: #1b1b1b;
+  padding: 2.5rem 1rem;
+  border-radius: 18px;
 }
 
 #project-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
 }
 
 .project-card {
-  background: #3a3a3a;
-  padding: 1rem;
-  width: 220px;
-  border-radius: 8px;
+  background: #242424;
+  padding: 1.2rem;
+  border-radius: 14px;
+  transition: transform 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+}
+
+.project-card h3 {
+  margin-bottom: 0.4rem;
 }
 
 .project-card a {
-  color: #4da6ff;
+  color: #4da3ff;
   text-decoration: none;
 }
 
-/* SNAKE */
+/* ---------- SNAKE GAME ---------- */
 
 #snake-game {
   text-align: center;
-  padding: 3rem 2rem;
+  opacity: 0.95;
 }
 
-.snake-wrapper {
-  position: relative;
-  display: inline-block;
-  margin-top: 1rem;
+.game-note {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 0.8rem;
 }
 
-#snake-canvas {
-  background: #111;
-  border-radius: 10px;
-}
-
-button {
-  padding: 0.5rem 1rem;
-  margin-top: 1rem;
+#start-snake {
+  margin-bottom: 1rem;
+  padding: 0.6rem 1.2rem;
+  background: #2e7dff;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
   cursor: pointer;
 }
 
-footer {
-  background: #222;
-  color: white;
-  text-align: center;
-  padding: 1rem;
+#start-snake:hover {
+  background: #1e66e1;
 }
 
+.snake-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+canvas {
+  background: #111;
+  border-radius: 12px;
+  border: 2px solid #333;
+}
+
+/* ---------- FOOTER ---------- */
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #777;
+  font-size: 0.85rem;
+}
 

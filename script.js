@@ -167,39 +167,42 @@ function updatePong() {
 }
 
 /* ===============================
-   SPACE INVADERS (FIXED)
+   SPACE INVADERS (PROGRESSIVE LEVELS)
 ================================ */
 const invCanvas = document.getElementById("invaders-canvas");
 const ictx = invCanvas.getContext("2d");
 document.getElementById("start-invaders").onclick = startInvaders;
 
 let level, playerX, bullets, invaders;
-let invDir, invSpeed;
+let invFallSpeed, landed;
 
 function startInvaders() {
   stopAllGames();
   activeGame = "invaders";
+
   level = 1;
-  setupInvaders();
+  setupLevel();
+
   invLoop = setInterval(updateInvaders, 30);
 }
 
-function setupInvaders() {
+function setupLevel() {
   bullets = [];
   invaders = [];
+  landed = false;
+
   playerX = invCanvas.width / 2;
 
-  invDir = 1;
-  invSpeed = 0.4 + level * 0.2;
-
-  const rows = Math.min(2 + level, 5);
-  const cols = 6;
+  const rows = Math.min(2 + level, 6);     // gentle ramp
+  const cols = 8;
+  invFallSpeed = 0.4 + level * 0.15;        // smooth difficulty
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       invaders.push({
-        x: 60 + c * 50,
-        y: -100 - r * 40
+        x: 40 + c * 40,
+        y: -r * 35 - 30,   // spawn ABOVE screen
+        landed: false
       });
     }
   }
@@ -208,68 +211,87 @@ function setupInvaders() {
 function updateInvaders() {
   if (activeGame !== "invaders") return;
 
+  /* -------- PLAYER -------- */
   if (keys["a"] || keys["arrowleft"]) playerX -= 5;
   if (keys["d"] || keys["arrowright"]) playerX += 5;
-  playerX = Math.max(20, Math.min(invCanvas.width - 20, playerX));
 
-  if ((keys[" "] || keys["space"]) && bullets.length < 3) {
-    bullets.push({ x: playerX, y: invCanvas.height - 45 });
+  playerX = Math.max(15, Math.min(invCanvas.width - 15, playerX));
+
+  /* -------- SHOOT -------- */
+  if (keys[" "] && bullets.length < 3) {
+    bullets.push({ x: playerX, y: invCanvas.height - 30 });
     keys[" "] = false;
   }
 
-  bullets.forEach(b => b.y -= 6);
-  bullets = bullets.filter(b => b.y > 0);
+  /* -------- INVADERS FALL IN -------- */
+  landed = true;
 
-  invaders.forEach(i => {
-    if (i.y < 60) {
-      i.y += 1.2;
-    } else {
-      i.x += invSpeed * invDir;
+  invaders.forEach(inv => {
+    if (!inv.landed) {
+      inv.y += invFallSpeed;
+      if (inv.y >= 40) inv.landed = true;
+      else landed = false;
     }
   });
 
-  if (invaders.some(i => i.x < 20 || i.x > invCanvas.width - 40)) {
-    invDir *= -1;
-    invaders.forEach(i => i.y += 10);
-  }
+  /* -------- BULLETS -------- */
+  bullets.forEach(b => b.y -= 6);
+  bullets = bullets.filter(b => b.y > 0);
 
-  bullets.forEach(b => {
-    invaders = invaders.filter(i => !(
-      b.x > i.x && b.x < i.x + 24 &&
-      b.y > i.y && b.y < i.y + 24
-    ));
+  /* -------- COLLISIONS -------- */
+  invaders = invaders.filter(inv => {
+    const hit = bullets.some(b =>
+      b.x > inv.x &&
+      b.x < inv.x + 20 &&
+      b.y > inv.y &&
+      b.y < inv.y + 20
+    );
+    return !hit;
   });
 
-  const shipY = invCanvas.height - 40;
-  if (invaders.some(i =>
-    i.y + 24 >= shipY &&
-    i.x < playerX + 15 &&
-    i.x + 24 > playerX - 15
-  )) {
+  /* -------- LEVEL COMPLETE -------- */
+  if (invaders.length === 0) {
+    level++;
+
+    if (level > 8) {
+      stopAllGames();
+      alert("You win! 🎉");
+      return;
+    }
+
+    setupLevel(); // 🔥 THIS IS THE IMPORTANT PART
+  }
+
+  /* -------- GAME OVER -------- */
+  if (invaders.some(inv => inv.y > invCanvas.height - 60)) {
     stopAllGames();
+    alert("Game Over");
     return;
   }
 
-  if (invaders.length === 0) {
-    level++;
-    setupInvaders();
-  }
-
+  /* -------- DRAW -------- */
   ictx.fillStyle = "#111";
   ictx.fillRect(0, 0, invCanvas.width, invCanvas.height);
 
-  ictx.fillStyle = "#00ff88";
+  // Ship (triangle style)
+  ictx.fillStyle = "#00ffff";
   ictx.beginPath();
-  ictx.moveTo(playerX, invCanvas.height - 55);
-  ictx.lineTo(playerX - 15, invCanvas.height - 25);
-  ictx.lineTo(playerX + 15, invCanvas.height - 25);
+  ictx.moveTo(playerX, invCanvas.height - 40);
+  ictx.lineTo(playerX - 15, invCanvas.height - 20);
+  ictx.lineTo(playerX + 15, invCanvas.height - 20);
   ictx.closePath();
   ictx.fill();
 
-  ictx.fillStyle = "#0ff";
+  // Bullets
+  ictx.fillStyle = "#fff";
   bullets.forEach(b => ictx.fillRect(b.x - 2, b.y, 4, 8));
 
+  // Invaders
   ictx.fillStyle = "#a020f0";
-  invaders.forEach(i => ictx.fillRect(i.x, i.y, 24, 24));
-}
+  invaders.forEach(inv => ictx.fillRect(inv.x, inv.y, 20, 20));
 
+  // Level text
+  ictx.fillStyle = "#aaa";
+  ictx.font = "14px Arial";
+  ictx.fillText(`Level ${level}`, 10, 20);
+}

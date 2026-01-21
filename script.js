@@ -1,118 +1,78 @@
-/* ---------- PROJECTS ---------- */
-
-async function loadProjects() {
-  const username = "lokiscripts22";
-  const res = await fetch(`https://api.github.com/users/${username}/repos`);
-  const repos = await res.json();
-
-  const list = document.getElementById("project-list");
-  list.innerHTML = "";
-
-  repos.forEach(repo => {
-    const card = document.createElement("div");
-    card.className = "project-card";
-    card.innerHTML = `
-      <h3>${repo.name}</h3>
-      <p>${repo.description || "No description"}</p>
-      <a href="${repo.html_url}" target="_blank">View on GitHub</a>
-    `;
-    list.appendChild(card);
-  });
+/* ---------------- PROJECTS ---------------- */
+function loadProjects() {
+  const projectList = document.getElementById("project-list");
+  projectList.innerHTML = `
+    <div class="project-card">
+      <h3>Portfolio Website</h3>
+      <p>Personal developer portfolio.</p>
+      <a href="https://github.com/lokiscripts22" target="_blank">View GitHub</a>
+    </div>
+  `;
 }
-
 loadProjects();
 
-/* ---------- SNAKE GAME ---------- */
+/* ---------------- SNAKE ---------------- */
+const snakeCanvas = document.getElementById("snake-canvas");
+const sctx = snakeCanvas.getContext("2d");
+let snakeLoop, snakeRunning = false;
 
-const canvas = document.getElementById("snake-canvas");
-const ctx = canvas.getContext("2d");
-const startBtn = document.getElementById("start-snake");
+document.getElementById("start-snake").onclick = () => {
+  if (snakeRunning) return;
+  snakeRunning = true;
+  let snake = [{x: 10, y: 10}];
+  let dir = {x: 1, y: 0};
+  let food = {x: 5, y: 5};
 
-const cellSize = 20;
-const cols = canvas.width / cellSize;
-const rows = canvas.height / cellSize;
+  snakeLoop = setInterval(() => {
+    sctx.clearRect(0,0,300,300);
+    const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+    snake.unshift(head);
+    if (head.x === food.x && head.y === food.y) {
+      food = {x: Math.random()*20|0, y: Math.random()*20|0};
+    } else snake.pop();
 
-let snake = [];
-let direction = { x: 1, y: 0 };
-let food = {};
-let loop = null;
-let running = false;
+    snake.forEach(p => {
+      sctx.fillStyle = "#0f0";
+      sctx.fillRect(p.x*15,p.y*15,15,15);
+    });
+    sctx.fillStyle="#f00";
+    sctx.fillRect(food.x*15,food.y*15,15,15);
+  },120);
 
-function startGame() {
-  snake = [{ x: 10, y: 10 }];
-  direction = { x: 1, y: 0 };
-  placeFood();
-  running = true;
-
-  clearInterval(loop);
-  loop = setInterval(update, 120);
-}
-
-function placeFood() {
-  food = {
-    x: Math.floor(Math.random() * cols),
-    y: Math.floor(Math.random() * rows)
+  document.onkeydown = e => {
+    if (e.key==="ArrowUp") dir={x:0,y:-1};
+    if (e.key==="ArrowDown") dir={x:0,y:1};
+    if (e.key==="ArrowLeft") dir={x:-1,y:0};
+    if (e.key==="ArrowRight") dir={x:1,y:0};
   };
-}
+};
 
-function update() {
-  if (!running) return;
+/* ---------------- PONG ---------------- */
+const pong = document.getElementById("pong-canvas").getContext("2d");
+document.getElementById("start-pong").onclick = () => {
+  let y=120, by=150, bx=150, dx=2, dy=2;
+  setInterval(()=>{
+    pong.clearRect(0,0,300,300);
+    pong.fillRect(10,y,10,60);
+    pong.beginPath(); pong.arc(bx,by,6,0,Math.PI*2); pong.fill();
+    bx+=dx; by+=dy;
+    if(by<0||by>300)dy*=-1;
+    if(bx<20)dx*=-1;
+    if(bx>300)bx=150;
+  },16);
+};
 
-  const head = {
-    x: snake[0].x + direction.x,
-    y: snake[0].y + direction.y
+/* ---------------- SPACE INVADERS ---------------- */
+const inv = document.getElementById("invaders-canvas").getContext("2d");
+document.getElementById("start-invaders").onclick = () => {
+  let x=140;
+  document.onkeydown=e=>{
+    if(e.key==="ArrowLeft")x-=10;
+    if(e.key==="ArrowRight")x+=10;
   };
-
-  if (
-    head.x < 0 || head.x >= cols ||
-    head.y < 0 || head.y >= rows ||
-    snake.some(s => s.x === head.x && s.y === head.y)
-  ) {
-    running = false;
-    clearInterval(loop);
-    return;
-  }
-
-  snake.unshift(head);
-
-  if (head.x === food.x && head.y === food.y) {
-    placeFood();
-  } else {
-    snake.pop();
-  }
-
-  draw();
-}
-
-function draw() {
-  ctx.fillStyle = "#111";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "#0f0";
-  snake.forEach(s =>
-    ctx.fillRect(s.x * cellSize, s.y * cellSize, cellSize, cellSize)
-  );
-
-  ctx.fillStyle = "#f00";
-  ctx.fillRect(food.x * cellSize, food.y * cellSize, cellSize, cellSize);
-}
-
-document.addEventListener("keydown", e => {
-  const key = e.key.toLowerCase();
-
-  if ((key === "w" || key === "arrowup") && direction.y === 0)
-    direction = { x: 0, y: -1 };
-
-  if ((key === "s" || key === "arrowdown") && direction.y === 0)
-    direction = { x: 0, y: 1 };
-
-  if ((key === "a" || key === "arrowleft") && direction.x === 0)
-    direction = { x: -1, y: 0 };
-
-  if ((key === "d" || key === "arrowright") && direction.x === 0)
-    direction = { x: 1, y: 0 };
-});
-
-startBtn.onclick = startGame;
-
+  setInterval(()=>{
+    inv.clearRect(0,0,300,300);
+    inv.fillRect(x,260,20,20);
+  },30);
+};
 

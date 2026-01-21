@@ -54,7 +54,7 @@ body {
 .lighthouse-card {
   background: white;
   color: #333;
-  max-width: 340px;
+  max-width: 360px;
   margin: 1.2rem auto;
   padding: 1rem;
   border-radius: 10px;
@@ -91,72 +91,58 @@ body {
 
 #project-list {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
-}
-
-.project-card {
-  background: #3a3a3a;
-  width: 240px;
-  padding: 1rem;
-  border-radius: 8px;
-}
-
-.project-card a {
-  color: #66b3ff;
-  text-decoration: none;
 }
 
 /* LIGHTHOUSE */
-#lighthouse-proof {
-  padding: 3rem 1rem;
-  text-align: center;
-}
-
 .lighthouse-images {
   display: flex;
+  gap: 1rem;
   justify-content: center;
-  align-items: flex-start;
-  gap: 1.5rem;
   flex-wrap: wrap;
-  margin-top: 1.5rem;
 }
 
 .lighthouse-images img {
-  display: block;
-  width: auto;
-  height: auto;
   max-width: 420px;
-  max-height: 260px;
+  width: 100%;
+  height: auto;
   object-fit: contain;
   background: #111;
   padding: 0.5rem;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* SNAKE */
-#snake-game {
+/* GAMES */
+#games-showcase {
   padding: 3rem 1rem;
+  background: #ede7f6;
   text-align: center;
 }
 
-.snake-wrapper {
+.games-grid {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
 }
 
-#snake-canvas {
+.game-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  width: 320px;
+}
+
+canvas {
   background: #111;
-  border: 3px solid #333;
   border-radius: 8px;
+  margin-top: 0.5rem;
 }
 
 button {
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
 }
 
@@ -168,4 +154,9 @@ footer {
   padding: 1rem;
 }
 
-
+/* DISABLE GAMES ON MOBILE */
+@media (max-width: 900px) {
+  #games-showcase {
+    display: none;
+  }
+}

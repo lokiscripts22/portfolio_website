@@ -9,16 +9,23 @@ const cellSize = 20;
 const cols = canvas.width / cellSize;
 const rows = canvas.height / cellSize;
 
-let snake, direction, food, gameLoop;
+let snake = [];
+let direction = { x: 1, y: 0 }; // START MOVING
+let food = {};
+let loop = null;
+let running = false;
 
-function initGame() {
+/* -------- SNAKE GAME -------- */
+
+function startGame() {
   snake = [{ x: 10, y: 10 }];
-  direction = { x: 0, y: 0 };
+  direction = { x: 1, y: 0 };
   placeFood();
   overlay.classList.add("hidden");
+  running = true;
 
-  clearInterval(gameLoop);
-  gameLoop = setInterval(update, 120);
+  clearInterval(loop);
+  loop = setInterval(update, 120);
 }
 
 function placeFood() {
@@ -29,6 +36,8 @@ function placeFood() {
 }
 
 function update() {
+  if (!running) return;
+
   const head = {
     x: snake[0].x + direction.x,
     y: snake[0].y + direction.y
@@ -68,26 +77,35 @@ function draw() {
 }
 
 function endGame() {
-  clearInterval(gameLoop);
+  running = false;
+  clearInterval(loop);
   overlay.classList.remove("hidden");
 }
 
+/* -------- CONTROLS (FIXED) -------- */
+
 document.addEventListener("keydown", e => {
+  e.preventDefault();
+
   const key = e.key.toLowerCase();
+
   if ((key === "w" || key === "arrowup") && direction.y === 0)
     direction = { x: 0, y: -1 };
+
   if ((key === "s" || key === "arrowdown") && direction.y === 0)
     direction = { x: 0, y: 1 };
+
   if ((key === "a" || key === "arrowleft") && direction.x === 0)
     direction = { x: -1, y: 0 };
+
   if ((key === "d" || key === "arrowright") && direction.x === 0)
     direction = { x: 1, y: 0 };
 });
 
-startBtn.onclick = initGame;
-restartBtn.onclick = initGame;
+startBtn.onclick = startGame;
+restartBtn.onclick = startGame;
 
-/* ===== GitHub Projects ===== */
+/* -------- PROJECTS -------- */
 
 async function loadProjects() {
   const username = "lokiscripts22";
@@ -110,4 +128,5 @@ async function loadProjects() {
 }
 
 loadProjects();
+
 

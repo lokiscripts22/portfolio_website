@@ -45,11 +45,39 @@ header {
   font-weight: bold;
 }
 
-/* ===== Snake Game ===== */
+/* PROJECTS */
+
+#projects {
+  background: #2b2b2b;
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+#project-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.project-card {
+  background: #3a3a3a;
+  padding: 1rem;
+  width: 220px;
+  border-radius: 8px;
+}
+
+.project-card a {
+  color: #4da6ff;
+  text-decoration: none;
+}
+
+/* SNAKE */
 
 #snake-game {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 2rem;
 }
 
 .snake-wrapper {
@@ -84,38 +112,11 @@ button {
   cursor: pointer;
 }
 
-/* ===== Projects ===== */
-
-#projects {
-  background: #2b2b2b;
-  color: white;
-  padding: 2rem;
-  text-align: center;
-}
-
-#project-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.project-card {
-  background: #3a3a3a;
-  padding: 1rem;
-  width: 220px;
-  border-radius: 8px;
-}
-
-.project-card a {
-  color: #4da6ff;
-  text-decoration: none;
-}
-
 footer {
   background: #222;
   color: white;
   text-align: center;
   padding: 1rem;
 }
+
 

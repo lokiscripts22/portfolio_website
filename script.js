@@ -14,29 +14,28 @@ function stopAllGames() {
 }
 
 /* ===============================
-   KEY HANDLING (ARROWS + WASD)
+   KEY HANDLING (SAFE)
 ================================ */
 const keys = {};
-
 document.addEventListener("keydown", e => {
+  if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," "].includes(e.key)) {
+    e.preventDefault();
+  }
   keys[e.key.toLowerCase()] = true;
 });
-
 document.addEventListener("keyup", e => {
   keys[e.key.toLowerCase()] = false;
 });
 
 /* ===============================
-   PROJECTS (GITHUB API)
+   PROJECTS
 ================================ */
 async function loadProjects() {
   try {
     const res = await fetch("https://api.github.com/users/lokiscripts22/repos");
     const repos = await res.json();
-
     const list = document.getElementById("project-list");
     list.innerHTML = "";
-
     repos.forEach(repo => {
       const card = document.createElement("div");
       card.className = "project-card";
@@ -47,14 +46,12 @@ async function loadProjects() {
       `;
       list.appendChild(card);
     });
-  } catch {
-    console.warn("GitHub API blocked");
-  }
+  } catch {}
 }
 loadProjects();
 
 /* ===============================
-   SNAKE
+   SNAKE (STABLE)
 ================================ */
 const snakeCanvas = document.getElementById("snake-canvas");
 const sctx = snakeCanvas.getContext("2d");
@@ -102,12 +99,8 @@ function updateSnake() {
   }
 
   snake.unshift(head);
-
-  if (head.x === food.x && head.y === food.y) {
-    food = spawnFood();
-  } else {
-    snake.pop();
-  }
+  if (head.x === food.x && head.y === food.y) food = spawnFood();
+  else snake.pop();
 
   sctx.fillStyle = "#111";
   sctx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
@@ -120,7 +113,7 @@ function updateSnake() {
 }
 
 /* ===============================
-   PONG (WITH AI)
+   PONG (AI + FIXED BALL)
 ================================ */
 const pongCanvas = document.getElementById("pong-canvas");
 const pctx = pongCanvas.getContext("2d");
@@ -152,8 +145,8 @@ function updatePong() {
 
   if (ball.y <= 0 || ball.y >= pongCanvas.height) ball.vy *= -1;
 
-  if (ball.x < 20 && ball.y > pY && ball.y < pY + 80) ball.vx *= -1;
-  if (ball.x > pongCanvas.width - 20 && ball.y > aiY && ball.y < aiY + 80) ball.vx *= -1;
+  if (ball.x < 20 && ball.y > pY && ball.y < pY + 80) ball.vx = Math.abs(ball.vx);
+  if (ball.x > pongCanvas.width - 20 && ball.y > aiY && ball.y < aiY + 80) ball.vx = -Math.abs(ball.vx);
 
   if (ball.x < 0 || ball.x > pongCanvas.width) {
     stopAllGames();
@@ -172,42 +165,41 @@ function updatePong() {
 }
 
 /* ===============================
-   SPACE INVADERS (FIXED + FAIR)
+   SPACE INVADERS (DROP-IN + FAIR)
 ================================ */
 const invCanvas = document.getElementById("invaders-canvas");
 const ictx = invCanvas.getContext("2d");
 document.getElementById("start-invaders").onclick = startInvaders;
 
 let level, playerX, bullets, invaders;
-let invSpeed, invDir, invDrop;
+let invDir, invSpeed, dropTargetY;
 
 function startInvaders() {
   stopAllGames();
   activeGame = "invaders";
   level = 1;
-  initLevel();
+  setupLevel();
   invLoop = setInterval(updateInvaders, 30);
 }
 
-function initLevel() {
-  playerX = invCanvas.width / 2;
+function setupLevel() {
   bullets = [];
+  invaders = [];
+  playerX = invCanvas.width / 2;
 
   invDir = 1;
-  invSpeed = 0.6 + level * 0.25;
-  invDrop = 8;
+  invSpeed = 0.3 + level * 0.15;
+  dropTargetY = 60;
 
-  invaders = [];
-  const rows = Math.min(3 + level, 6);
-  const cols = 7;
+  const rows = Math.min(2 + level, 5);
+  const cols = 6;
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       invaders.push({
-        x: 50 + c * 55,
-        y: 40 + r * 35,
-        w: 20,
-        h: 20
+        x: 60 + c * 50,
+        y: -r * 40,
+        landed: false
       });
     }
   }
@@ -220,62 +212,65 @@ function updateInvaders() {
   if (keys["d"] || keys["arrowright"]) playerX += 5;
   playerX = Math.max(20, Math.min(invCanvas.width - 20, playerX));
 
-  if (keys[" "] && bullets.length < 3) {
+  if ((keys[" "] || keys["space"]) && bullets.length < 3) {
     bullets.push({ x: playerX, y: invCanvas.height - 40 });
     keys[" "] = false;
-  }
-
-  let hitEdge = false;
-  invaders.forEach(i => {
-    i.x += invSpeed * invDir;
-    if (i.x < 10 || i.x + i.w > invCanvas.width - 10) hitEdge = true;
-  });
-
-  if (hitEdge) {
-    invDir *= -1;
-    invaders.forEach(i => i.y += invDrop);
   }
 
   bullets.forEach(b => b.y -= 6);
   bullets = bullets.filter(b => b.y > 0);
 
-  invaders = invaders.filter(i =>
-    !bullets.some(b =>
-      b.x > i.x && b.x < i.x + i.w &&
-      b.y > i.y && b.y < i.y + i.h
-    )
-  );
+  invaders.forEach(i => {
+    if (!i.landed) {
+      i.y += 1;
+      if (i.y >= dropTargetY) i.landed = true;
+    } else {
+      i.x += invSpeed * invDir;
+    }
+  });
+
+  if (invaders.some(i => i.landed && (i.x < 20 || i.x > invCanvas.width - 40))) {
+    invDir *= -1;
+    invaders.forEach(i => i.y += 10);
+  }
+
+  bullets.forEach(b => {
+    invaders = invaders.filter(i => !(
+      b.x > i.x && b.x < i.x + 24 &&
+      b.y > i.y && b.y < i.y + 24
+    ));
+  });
+
+  const shipY = invCanvas.height - 35;
+  if (invaders.some(i =>
+    i.y + 24 >= shipY &&
+    i.x < playerX + 15 &&
+    i.x + 24 > playerX - 15
+  )) {
+    stopAllGames();
+    return;
+  }
 
   if (invaders.length === 0) {
     level++;
-    if (level > 10) {
-      stopAllGames();
-      return;
-    }
-    initLevel();
-  }
-
-  const shipY = invCanvas.height - 30;
-  if (invaders.some(i => i.y + i.h >= shipY)) {
-    stopAllGames();
-    return;
+    setupLevel();
   }
 
   ictx.fillStyle = "#111";
   ictx.fillRect(0, 0, invCanvas.width, invCanvas.height);
 
-  ictx.fillStyle = "#0f0";
+  ictx.fillStyle = "#00ff88";
   ictx.beginPath();
-  ictx.moveTo(playerX, shipY);
-  ictx.lineTo(playerX - 15, shipY + 15);
-  ictx.lineTo(playerX + 15, shipY + 15);
+  ictx.moveTo(playerX, invCanvas.height - 50);
+  ictx.lineTo(playerX - 15, invCanvas.height - 20);
+  ictx.lineTo(playerX + 15, invCanvas.height - 20);
   ictx.closePath();
   ictx.fill();
 
   ictx.fillStyle = "#0ff";
-  bullets.forEach(b => ictx.fillRect(b.x - 2, b.y, 5, 10));
+  bullets.forEach(b => ictx.fillRect(b.x - 2, b.y, 4, 8));
 
   ictx.fillStyle = "#a020f0";
-  invaders.forEach(i => ictx.fillRect(i.x, i.y, i.w, i.h));
+  invaders.forEach(i => ictx.fillRect(i.x, i.y, 24, 24));
 }
 

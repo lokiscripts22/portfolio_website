@@ -1,4 +1,25 @@
-// ================= SNAKE GAME =================
+// ========== GITHUB PROJECTS ==========
+async function loadProjects() {
+  const res = await fetch("https://api.github.com/users/lokiscripts22/repos");
+  const repos = await res.json();
+
+  const list = document.getElementById("project-list");
+  list.innerHTML = "";
+
+  repos.forEach(repo => {
+    const div = document.createElement("div");
+    div.className = "project-card";
+    div.innerHTML = `
+      <h3>${repo.name}</h3>
+      <p>${repo.description || "No description"}</p>
+      <a href="${repo.html_url}" target="_blank">View</a>
+    `;
+    list.appendChild(div);
+  });
+}
+loadProjects();
+
+// ========== SNAKE GAME ==========
 const canvas = document.getElementById("snake-canvas");
 const ctx = canvas.getContext("2d");
 
@@ -6,98 +27,76 @@ const startBtn = document.getElementById("start-snake");
 const restartBtn = document.getElementById("restart-snake");
 const overlay = document.getElementById("snake-overlay");
 
-const box = 20;
-const rows = canvas.width / box;
+const size = 20;
+const tiles = canvas.width / size;
 
-let snake = [];
-let dir = { x: 0, y: 0 };
-let food = {};
-let game = null;
-let started = false;
+let snake, dir, food, loop, running = false;
 
-// ---------------- Controls ----------------
+startBtn.onclick = start;
+restartBtn.onclick = start;
+
 document.addEventListener("keydown", e => {
-  if (!started) return;
-
+  if (!running) return;
   if (e.key === "ArrowUp" && dir.y === 0) dir = { x: 0, y: -1 };
   if (e.key === "ArrowDown" && dir.y === 0) dir = { x: 0, y: 1 };
   if (e.key === "ArrowLeft" && dir.x === 0) dir = { x: -1, y: 0 };
   if (e.key === "ArrowRight" && dir.x === 0) dir = { x: 1, y: 0 };
 });
 
-// ---------------- Game Start ----------------
-startBtn.onclick = startGame;
-restartBtn.onclick = startGame;
-
-function startGame() {
-  clearInterval(game);
+function start() {
+  clearInterval(loop);
   overlay.classList.add("hidden");
 
-  snake = [{ x: 9, y: 9 }];
+  snake = [{ x: 10, y: 10 }];
   dir = { x: 1, y: 0 };
-  food = spawnFood();
-  started = true;
+  food = spawn();
+  running = true;
 
-  game = setInterval(draw, 140);
+  loop = setInterval(update, 150);
 }
 
-// ---------------- Draw Loop ----------------
-function draw() {
+function update() {
   ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  const head = {
-    x: snake[0].x + dir.x,
-    y: snake[0].y + dir.y
-  };
+  const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
 
-  // Wall collision
   if (
-    head.x < 0 ||
-    head.y < 0 ||
-    head.x >= rows ||
-    head.y >= rows ||
-    collision(head, snake)
+    head.x < 0 || head.y < 0 ||
+    head.x >= tiles || head.y >= tiles ||
+    snake.some(s => s.x === head.x && s.y === head.y)
   ) {
-    gameOver();
+    die();
     return;
   }
 
   snake.unshift(head);
 
-  // Eat food
   if (head.x === food.x && head.y === food.y) {
-    food = spawnFood();
+    food = spawn();
   } else {
     snake.pop();
   }
 
-  // Draw snake
   ctx.fillStyle = "#0f0";
   snake.forEach(s =>
-    ctx.fillRect(s.x * box, s.y * box, box - 1, box - 1)
+    ctx.fillRect(s.x * size, s.y * size, size - 1, size - 1)
   );
 
-  // Draw food
   ctx.fillStyle = "#f00";
-  ctx.fillRect(food.x * box, food.y * box, box, box);
+  ctx.fillRect(food.x * size, food.y * size, size, size);
 }
 
-// ---------------- Helpers ----------------
-function spawnFood() {
+function spawn() {
   return {
-    x: Math.floor(Math.random() * rows),
-    y: Math.floor(Math.random() * rows)
+    x: Math.floor(Math.random() * tiles),
+    y: Math.floor(Math.random() * tiles)
   };
 }
 
-function collision(head, body) {
-  return body.some(seg => seg.x === head.x && seg.y === head.y);
-}
-
-function gameOver() {
-  clearInterval(game);
-  started = false;
+function die() {
+  clearInterval(loop);
+  running = false;
   overlay.classList.remove("hidden");
 }
 

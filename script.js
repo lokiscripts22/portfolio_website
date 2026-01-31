@@ -1,243 +1,229 @@
-let activeGame = null;
-let snakeLoop = null;
-let pongLoop = null;
-let invLoop = null;
-
-function stopAllGames() {
-  activeGame = null;
-  clearInterval(snakeLoop);
-  clearInterval(pongLoop);
-  clearInterval(invLoop);
-}
-
-const keys = {};
-
-document.addEventListener("keydown", e => {
-  if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"," "].includes(e.key)) e.preventDefault();
-  keys[e.key.toLowerCase()] = true;
-});
-
-document.addEventListener("keyup", e => {
-  keys[e.key.toLowerCase()] = false;
-});
-
-async function loadProjects() {
-  try {
-    const res = await fetch("https://api.github.com/users/lokiscripts22/repos");
-    const repos = await res.json();
-    const list = document.getElementById("project-list");
-    list.innerHTML = "";
-    repos.forEach(repo => {
-      const card = document.createElement("div");
-      card.className = "project-card";
-      card.innerHTML = `
-        <h3>${repo.name}</h3>
-        <p>${repo.description || "No description provided"}</p>
-        <a href="${repo.html_url}" target="_blank">View on GitHub</a>
-      `;
-      list.appendChild(card);
-    });
-  } catch {}
-}
-loadProjects();
-
-const snakeCanvas = document.getElementById("snake-canvas");
-const sctx = snakeCanvas.getContext("2d");
-document.getElementById("start-snake").onclick = startSnake;
-
-const grid = 20;
-let snake, food, snakeDir;
-
-function startSnake() {
-  stopAllGames();
-  activeGame = "snake";
-  snake = [{ x: 10, y: 10 }];
-  snakeDir = { x: 1, y: 0 };
-  food = spawnFood();
-  snakeLoop = setInterval(updateSnake, 120);
-}
-
-function spawnFood() {
-  return {
-    x: Math.floor(Math.random() * (snakeCanvas.width / grid)),
-    y: Math.floor(Math.random() * (snakeCanvas.height / grid))
-  };
-}
-
-function updateSnake() {
-  if (activeGame !== "snake") return;
-  if ((keys["arrowup"] || keys["w"]) && snakeDir.y !== 1) snakeDir = { x: 0, y: -1 };
-  if ((keys["arrowdown"] || keys["s"]) && snakeDir.y !== -1) snakeDir = { x: 0, y: 1 };
-  if ((keys["arrowleft"] || keys["a"]) && snakeDir.x !== 1) snakeDir = { x: -1, y: 0 };
-  if ((keys["arrowright"] || keys["d"]) && snakeDir.x !== -1) snakeDir = { x: 1, y: 0 };
-
-  const head = { x: snake[0].x + snakeDir.x, y: snake[0].y + snakeDir.y };
-
-  if (head.x < 0 || head.y < 0 || head.x >= snakeCanvas.width / grid || head.y >= snakeCanvas.height / grid || snake.some(s => s.x === head.x && s.y === head.y)) {
-    stopAllGames();
-    return;
-  }
-
-  snake.unshift(head);
-  if (head.x === food.x && head.y === food.y) food = spawnFood();
-  else snake.pop();
-
-  sctx.fillStyle = "#111";
-  sctx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
-
-  sctx.fillStyle = "#00ff88";
-  snake.forEach((s, i) => {
-    sctx.beginPath();
-    const radius = i === 0 ? 6 : 4;
-    sctx.roundRect(s.x * grid + 1, s.y * grid + 1, grid - 2, grid - 2, radius);
-    sctx.fill();
-  });
-
-  sctx.fillStyle = "#ff4444";
-  sctx.beginPath();
-  sctx.arc(food.x * grid + grid / 2, food.y * grid + grid / 2, grid / 2 - 2, 0, Math.PI * 2);
-  sctx.fill();
-  sctx.fillStyle = "#0a0";
-  sctx.fillRect(food.x * grid + grid / 2 - 2, food.y * grid - 2, 4, 4);
-}
-
-const pongCanvas = document.getElementById("pong-canvas");
-const pctx = pongCanvas.getContext("2d");
-document.getElementById("start-pong").onclick = startPong;
-
-let pY, aiY, ball;
-
-function startPong() {
-  stopAllGames();
-  activeGame = "pong";
-  pY = aiY = pongCanvas.height / 2 - 40;
-  ball = { x: 200, y: 150, vx: 4, vy: 3 };
-  pongLoop = setInterval(updatePong, 16);
-}
-
-function updatePong() {
-  if (activeGame !== "pong") return;
-  if ((keys["w"] || keys["arrowup"]) && pY > 0) pY -= 6;
-  if ((keys["s"] || keys["arrowdown"]) && pY < pongCanvas.height - 80) pY += 6;
-  if (ball.y > aiY + 40) aiY += 4;
-  if (ball.y < aiY + 40) aiY -= 4;
-
-  ball.x += ball.vx;
-  ball.y += ball.vy;
-
-  if (ball.y <= 0 || ball.y >= pongCanvas.height) ball.vy *= -1;
-  if (ball.x < 20 && ball.y > pY && ball.y < pY + 80) ball.vx = Math.abs(ball.vx);
-  if (ball.x > pongCanvas.width - 20 && ball.y > aiY && ball.y < aiY + 80) ball.vx = -Math.abs(ball.vx);
-  if (ball.x < 0 || ball.x > pongCanvas.width) {
-    stopAllGames();
-    return;
-  }
-
-  pctx.fillStyle = "#111";
-  pctx.fillRect(0, 0, pongCanvas.width, pongCanvas.height);
-  pctx.fillStyle = "#fff";
-  pctx.fillRect(10, pY, 10, 80);
-  pctx.fillRect(pongCanvas.width - 20, aiY, 10, 80);
-  pctx.beginPath();
-  pctx.arc(ball.x, ball.y, 6, 0, Math.PI * 2);
-  pctx.fill();
-}
-
-const invCanvas = document.getElementById("invaders-canvas");
-const ictx = invCanvas.getContext("2d");
-document.getElementById("start-invaders").onclick = startInvaders;
-
-let level, playerX, bullets, invaders;
-let invFallSpeed, landed;
-
-function startInvaders() {
-  stopAllGames();
-  activeGame = "invaders";
-  level = 1;
-  setupLevel();
-  invLoop = setInterval(updateInvaders, 30);
-}
-
-function setupLevel() {
-  bullets = [];
-  invaders = [];
-  landed = false;
-  playerX = invCanvas.width / 2;
-  const rows = Math.min(2 + level, 6);
-  const cols = 8;
-  invFallSpeed = 0.4 + level * 0.15;
-
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      invaders.push({
-        x: 40 + c * 40,
-        y: -r * 35 - 30,
-        landed: false
+// ============================================
+// SMOOTH SCROLL HANDLING
+// ============================================
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
       });
     }
-  }
-}
-
-function updateInvaders() {
-  if (activeGame !== "invaders") return;
-
-  if (keys["a"] || keys["arrowleft"]) playerX -= 5;
-  if (keys["d"] || keys["arrowright"]) playerX += 5;
-  playerX = Math.max(15, Math.min(invCanvas.width - 15, playerX));
-
-  if (keys[" "] && bullets.length < 3) {
-    bullets.push({ x: playerX, y: invCanvas.height - 30 });
-    keys[" "] = false;
-  }
-
-  invaders.forEach(inv => inv.y += invFallSpeed);
-
-  bullets.forEach(b => b.y -= 6);
-  bullets = bullets.filter(b => b.y > 0);
-
-  invaders = invaders.filter(inv => {
-    const hit = bullets.some(b => b.x > inv.x && b.x < inv.x + 20 && b.y > inv.y && b.y < inv.y + 20);
-    return !hit;
   });
+});
 
-  // Remove aliens that reach bottom
-  invaders = invaders.filter(inv => inv.y < invCanvas.height);
+// ============================================
+// NAVBAR SCROLL EFFECT
+// ============================================
+let lastScroll = 0;
+const navbar = document.querySelector('.navbar');
 
-  // Next level if all aliens gone
-  if (invaders.length === 0) {
-    level++;
-    setupLevel();
+window.addEventListener('scroll', () => {
+  const currentScroll = window.pageYOffset;
+  
+  if (currentScroll > 100) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
   }
+  
+  lastScroll = currentScroll;
+});
 
-  ictx.fillStyle = "#111";
-  ictx.fillRect(0, 0, invCanvas.width, invCanvas.height);
+// ============================================
+// PRIVACY POLICY MODAL
+// ============================================
+const privacyModal = document.getElementById('privacyModal');
 
-  // Ship
-  ictx.fillStyle = "#00ffff";
-  ictx.fillRect(playerX - 12, invCanvas.height - 30, 24, 10);
-  ictx.fillStyle = "#0ff";
-  ictx.fillRect(playerX - 5, invCanvas.height - 40, 10, 10);
-
-  // Bullets
-  ictx.fillStyle = "#fff";
-  bullets.forEach(b => ictx.fillRect(b.x - 2, b.y, 4, 8));
-
-  // Aliens
-  invaders.forEach(inv => drawAlien(inv.x, inv.y));
-
-  ictx.fillStyle = "#aaa";
-  ictx.font = "14px Arial";
-  ictx.fillText(`Level ${level}`, 10, 20);
+function openPrivacyModal() {
+  privacyModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
-function drawAlien(x, y) {
-  ictx.fillStyle = "#a020f0";
-  ictx.fillRect(x+2, y, 16, 8);
-  ictx.fillRect(x, y+8, 20, 8);
-  ictx.fillRect(x, y+16, 4, 4);
-  ictx.fillRect(x+16, y+16, 4, 4);
-  ictx.fillStyle = "#fff";
-  ictx.fillRect(x+4, y+2, 3, 3);
-  ictx.fillRect(x+13, y+2, 3, 3);
+function closePrivacyModal() {
+  privacyModal.classList.remove('active');
+  document.body.style.overflow = '';
 }
 
+// Close modal on ESC key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && privacyModal.classList.contains('active')) {
+    closePrivacyModal();
+  }
+});
+
+// ============================================
+// FETCH GITHUB PROJECTS
+// ============================================
+const GITHUB_USERNAME = 'lokiscripts22';
+const EXCLUDED_REPOS = ['lokiscripts22', 'portfolio_website', 'bybit_micro_bot']; // Exclude featured projects
+
+async function fetchGitHubProjects() {
+  try {
+    const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=9`);
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch repositories');
+    }
+    
+    const repos = await response.json();
+    const projectList = document.getElementById('project-list');
+    
+    // Filter out excluded repos and private repos
+    const filteredRepos = repos.filter(repo => 
+      !EXCLUDED_REPOS.includes(repo.name) && !repo.private
+    );
+    
+    if (filteredRepos.length === 0) {
+      projectList.innerHTML = `
+        <div style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">
+          <p>More projects coming soon!</p>
+        </div>
+      `;
+      return;
+    }
+    
+    projectList.innerHTML = filteredRepos.map(repo => `
+      <div class="project-card">
+        <h3>${repo.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</h3>
+        <p>${repo.description || 'No description available'}</p>
+        ${repo.language ? `<span class="tech-badge" style="display: inline-block; margin-bottom: 1rem; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); color: var(--primary);">${repo.language}</span>` : ''}
+        <div>
+          <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">
+            View on GitHub →
+          </a>
+        </div>
+      </div>
+    `).join('');
+    
+    // Animate project cards
+    observeElements();
+  } catch (error) {
+    console.error('Error fetching GitHub projects:', error);
+    const projectList = document.getElementById('project-list');
+    projectList.innerHTML = `
+      <div style="text-align: center; color: var(--text-muted); grid-column: 1/-1;">
+        <p>Unable to load projects at this time.</p>
+        <p><a href="https://github.com/${GITHUB_USERNAME}" target="_blank" style="color: var(--primary);">Visit my GitHub profile</a></p>
+      </div>
+    `;
+  }
+}
+
+// ============================================
+// INTERSECTION OBSERVER FOR ANIMATIONS
+// ============================================
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, observerOptions);
+
+function observeElements() {
+  const elements = document.querySelectorAll('.project-card, .featured-card, .glass-card');
+  elements.forEach(el => {
+    if (!el.style.opacity) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+    }
+    observer.observe(el);
+  });
+}
+
+// ============================================
+// INIT ON LOAD
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+  // Load GitHub projects
+  fetchGitHubProjects();
+  
+  // Initial observation
+  observeElements();
+  
+  // Add scroll animations to sections
+  const sections = document.querySelectorAll('.section-projects, .section-lighthouse, .section-contact');
+  sections.forEach(section => {
+    section.style.opacity = '0';
+    section.style.transform = 'translateY(30px)';
+    section.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+    observer.observe(section);
+  });
+});
+
+// ============================================
+// PERFORMANCE OPTIMIZATION
+// ============================================
+// Lazy load images
+if ('loading' in HTMLImageElement.prototype) {
+  const images = document.querySelectorAll('img[loading="lazy"]');
+  images.forEach(img => {
+    if (img.dataset.src) {
+      img.src = img.dataset.src;
+    }
+  });
+}
+
+// ============================================
+// CONSOLE EASTER EGG
+// ============================================
+const styles = {
+  title: 'font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #00d4ff, #ff6b9d); -webkit-background-clip: text; color: transparent;',
+  text: 'font-size: 14px; color: #cbd5e1;',
+  link: 'font-size: 14px; color: #00d4ff; font-weight: bold;'
+};
+
+console.log('%c👋 Hey there, developer!', styles.title);
+console.log('%cLike what you see? Check out the code on GitHub:', styles.text);
+console.log(`%chttps://github.com/${GITHUB_USERNAME}`, styles.link);
+console.log('%c\n🔐 Building secure, scalable solutions', styles.text);
+
+// ============================================
+// PARTICLES EFFECT (Optional Enhancement)
+// ============================================
+// Add subtle particle effect on hero
+function createParticles() {
+  const hero = document.querySelector('.hero-overlay');
+  if (!hero) return;
+  
+  for (let i = 0; i < 20; i++) {
+    const particle = document.createElement('div');
+    particle.style.cssText = `
+      position: absolute;
+      width: ${Math.random() * 4 + 1}px;
+      height: ${Math.random() * 4 + 1}px;
+      background: rgba(0, 212, 255, ${Math.random() * 0.5 + 0.2});
+      border-radius: 50%;
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 100}%;
+      animation: float ${Math.random() * 10 + 10}s linear infinite;
+      pointer-events: none;
+    `;
+    hero.appendChild(particle);
+  }
+}
+
+// Add float animation
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translate(${Math.random() * 100 - 50}px, -100vh); opacity: 0; }
+  }
+`;
+document.head.appendChild(style);
+
+// Initialize particles
+setTimeout(createParticles, 1000);

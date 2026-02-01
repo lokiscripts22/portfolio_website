@@ -37,6 +37,10 @@ function hidePolicy() {
   }
 }
 
+// Make functions globally accessible
+window.showPolicy = showPolicy;
+window.hidePolicy = hidePolicy;
+
 document.addEventListener('keydown', (e) => {
   const overlay = document.getElementById('overlay');
   if (e.key === 'Escape' && overlay && overlay.classList.contains('active')) {

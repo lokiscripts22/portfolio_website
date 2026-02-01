@@ -1,183 +1,937 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Khayne - Software Developer</title>
-  <meta name="description" content="Software developer portfolio showcasing secure applications and modern web development">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-<nav class="topbar">
-  <div class="wrapper">
-    <a href="#top" class="brand">Khayne</a>
-    <ul class="links">
-      <li><a href="#intro">About</a></li>
-      <li><a href="#work">Projects</a></li>
-      <li><a href="#tech">Skills</a></li>
-      <li><a href="#reach">Contact</a></li>
-    </ul>
-  </div>
-</nav>
-
-<header id="top" class="banner">
-  <video class="backdrop" autoplay muted loop playsinline>
-    <source src="videos/beach-backdrop.mp4" type="video/mp4">
-  </video>
-  <div class="layer"></div>
+/* =============================================
+   VARIABLES & RESET
+   ============================================= */
+:root {
+  --primary: #00d4ff;
+  --secondary: #ff6b9d;
+  --accent: #ffd93d;
+  --success: #6bcf7f;
+  --purple: #a78bfa;
+  --blue: #60a5fa;
+  --green: #34d399;
+  --orange: #fb923c;
+  --pink: #f472b6;
   
-  <div class="center">
-    <span class="tag">Open to Work</span>
-    <h1 class="title">Hi, I'm Khayne</h1>
-    <p class="handle">lokiscripts22</p>
-    
-    <img src="images/profile.png" alt="Developer" class="avatar">
-    
-    <div class="card info-card">
-      <p><strong>Junior Software Developer</strong></p>
-      <p>Focused on clean, scalable, maintainable code.</p>
-      <p>GitHub: <a href="https://github.com/lokiscripts22" target="_blank">github.com/lokiscripts22</a></p>
-    </div>
-    
-    <div class="card tech-card">
-      <h3>Skills</h3>
-      <div class="badges">
-        <span class="badge python">🐍 Python</span>
-        <span class="badge java">☕ Java</span>
-        <span class="badge html">🌐 HTML</span>
-        <span class="badge css">🎨 CSS</span>
-        <span class="badge javascript">💻 JavaScript</span>
-      </div>
-    </div>
-    
-    <div class="card metrics-card">
-      <h3>🚦 Lighthouse Scores</h3>
-      <div class="metrics">
-        <div class="metric">
-          <span class="label">Desktop</span>
-          <span class="number">87</span>
-        </div>
-        <div class="metric">
-          <span class="label">Mobile</span>
-          <span class="number">87</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
+  --dark-bg: #0f172a;
+  --darker-bg: #020617;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  
+  --text-light: #f1f5f9;
+  --text-muted: #cbd5e1;
+  --text-dark: #1e293b;
+  
+  --shadow-glow: 0 8px 32px rgba(0, 212, 255, 0.3);
+  --shadow-pink-glow: 0 8px 32px rgba(255, 107, 157, 0.3);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
 
-<section id="work" class="showcase">
-  <div class="wrapper">
-    <h2 class="heading">Featured Work</h2>
-    
-    <div class="featured">
-      <article class="project vault">
-        <div class="top">
-          <span class="icon">🔐</span>
-          <span class="type security">Security</span>
-        </div>
-        <h3>VaultNotes</h3>
-        <p class="desc">Privacy-First Encrypted Notes</p>
-        <p class="details">Military-grade encrypted notes application with AES-256-GCM encryption. Built with React & Electron for secure, offline note-taking.</p>
-        <div class="stack">
-          <span class="tech react">React</span>
-          <span class="tech electron">Electron</span>
-          <span class="tech crypto">AES-256</span>
-          <span class="tech tailwind">Tailwind</span>
-        </div>
-        <div class="highlights">
-          <div class="point">✓ Military-grade encryption</div>
-          <div class="point">✓ 100% offline & local</div>
-          <div class="point">✓ Zero-knowledge architecture</div>
-          <div class="point">✓ Secure file attachments</div>
-        </div>
-        <div class="actions">
-          <a href="https://github.com/lokiscripts22" target="_blank" class="button primary">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            View Code
-          </a>
-          <button class="button outline" onclick="showPolicy()">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-            Privacy Policy
-          </button>
-        </div>
-      </article>
-      
-      <article class="project trading">
-        <div class="top">
-          <span class="icon">📈</span>
-          <span class="type finance">Trading</span>
-        </div>
-        <h3>Bybit Micro Bot</h3>
-        <p class="desc">Automated Trading Bot</p>
-        <p class="details">Concept-stage Python trading bot for Bybit featuring Tkinter GUI, learning and live modes, risk controls, and real-time trade analytics.</p>
-        <div class="stack">
-          <span class="tech python-alt">Python</span>
-          <span class="tech tkinter">Tkinter</span>
-          <span class="tech api">API</span>
-          <span class="tech analytics">Analytics</span>
-        </div>
-        <div class="highlights">
-          <div class="point">✓ Live & learning modes</div>
-          <div class="point">✓ Risk controls & limits</div>
-          <div class="point">✓ Real-time analytics</div>
-          <div class="point">✓ UI-driven automation</div>
-        </div>
-        <div class="actions">
-          <a href="https://github.com/lokiscripts22/bybit_micro_bot" target="_blank" class="button primary">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            View on GitHub
-          </a>
-          <span class="status">Concept Stage</span>
-        </div>
-      </article>
-    </div>
-    
-    <h3 class="subheading">Other Projects</h3>
-    <div id="repos" class="grid"></div>
-  </div>
-</section>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-<section id="performance" class="proof">
-  <div class="wrapper">
-    <h2 class="heading">Performance Audit</h2>
-    <p class="subtext">Audited using Google Lighthouse (Incognito, no extensions)</p>
-    <div class="images">
-      <img src="lighthouse/lighthouse-desktop.png" alt="Desktop Score" loading="lazy">
-      <img src="lighthouse/lighthouse-mobile.png" alt="Mobile Score" loading="lazy">
-    </div>
-  </div>
-</section>
+html {
+  scroll-behavior: smooth;
+}
 
-<section id="reach" class="connect">
-  <div class="wrapper">
-    <div class="card reach-card">
-      <h2>Let's Connect</h2>
-      <p>Interested in collaborating or have a project in mind?</p>
-      <div class="options">
-        <a href="https://github.com/lokiscripts22" target="_blank" class="button large">
-          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          GitHub
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: var(--text-light);
+  background: var(--darker-bg);
+  overflow-x: hidden;
+}
 
-<footer class="bottom">
-  <p>© 2026 Khayne | lokiscripts22</p>
-  <p class="motto">Building secure, scalable solutions</p>
-</footer>
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
 
-<div id="overlay" class="overlay">
-  <div class="blanket" onclick="hidePolicy()"></div>
-  <div class="panel">
-    <button class="close" onclick="hidePolicy()">&times;</button>
-    <iframe src="privacy.html" class="frame"></iframe>
-  </div>
-</div>
+/* =============================================
+   NAVIGATION
+   ============================================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
 
-<script src="script.js"></script>
-</body>
-</html>
+.navbar.scrolled {
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.nav-logo:hover {
+  filter: brightness(1.2);
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-light);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* =============================================
+   HERO SECTION
+   ============================================= */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: white;
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.7), rgba(0, 212, 255, 0.2), rgba(255, 107, 157, 0.2));
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+  animation: fadeInUp 1s ease-out;
+}
+
+.pulse-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--success), var(--green));
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 15px rgba(52, 211, 153, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #fff, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
+}
+
+.hero-username {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.profile-pic {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  object-fit: cover;
+  margin: 1.5rem auto;
+  display: block;
+  box-shadow: 0 8px 32px rgba(0, 212, 255, 0.4), 0 0 0 10px rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.profile-pic:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 48px rgba(0, 212, 255, 0.6), 0 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+/* =============================================
+   GLASS CARDS
+   ============================================= */
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 400px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 48px 0 rgba(0, 212, 255, 0.4);
+  border-color: rgba(0, 212, 255, 0.4);
+}
+
+.bio-card strong {
+  color: var(--primary);
+  font-size: 1.125rem;
+}
+
+.bio-card a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.bio-card a:hover {
+  color: var(--secondary);
+  text-decoration: underline;
+}
+
+.skills-card h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.skills-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.skill {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.skill-python {
+  background: linear-gradient(135deg, #3776ab, #ffd43b);
+  color: white;
+  box-shadow: 0 4px 15px rgba(55, 118, 171, 0.4);
+}
+
+.skill-java {
+  background: linear-gradient(135deg, #5382a1, #f89820);
+  color: white;
+  box-shadow: 0 4px 15px rgba(83, 130, 161, 0.4);
+}
+
+.skill-html {
+  background: linear-gradient(135deg, #e34c26, #f06529);
+  color: white;
+  box-shadow: 0 4px 15px rgba(227, 76, 38, 0.4);
+}
+
+.skill-css {
+  background: linear-gradient(135deg, #264de4, #2965f1);
+  color: white;
+  box-shadow: 0 4px 15px rgba(38, 77, 228, 0.4);
+}
+
+.skill-js {
+  background: linear-gradient(135deg, #f0db4f, #f7df1e);
+  color: #323330;
+  box-shadow: 0 4px 15px rgba(240, 219, 79, 0.4);
+}
+
+.skill:hover {
+  transform: translateY(-3px) scale(1.05);
+  filter: brightness(1.2);
+}
+
+.lighthouse-card h3 {
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.scores-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.score-item {
+  text-align: center;
+}
+
+.score-label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.score-value {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--success), var(--green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =============================================
+   SECTIONS
+   ============================================= */
+.section-projects,
+.section-lighthouse,
+.section-contact {
+  padding: 5rem 2rem;
+  position: relative;
+}
+
+.section-projects {
+  background: linear-gradient(180deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+}
+
+.section-lighthouse {
+  background: linear-gradient(180deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+}
+
+.section-contact {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 107, 157, 0.1));
+}
+
+.section-title {
+  font-size: 3rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-subtitle,
+.subsection-title {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 3rem;
+  font-size: 1.125rem;
+}
+
+.subsection-title {
+  font-size: 1.5rem;
+  margin-top: 4rem;
+  color: var(--primary);
+}
+
+/* =============================================
+   FEATURED PROJECTS
+   ============================================= */
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.featured-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2.5rem;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.featured-card:hover::before {
+  opacity: 1;
+}
+
+.featured-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--primary);
+  box-shadow: 0 20px 60px rgba(0, 212, 255, 0.3);
+}
+
+.featured-vault:hover {
+  box-shadow: 0 20px 60px rgba(168, 139, 250, 0.4);
+}
+
+.featured-trading:hover {
+  box-shadow: 0 20px 60px rgba(52, 211, 153, 0.4);
+}
+
+.featured-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.featured-icon {
+  font-size: 3rem;
+  filter: drop-shadow(0 4px 12px rgba(0, 212, 255, 0.6));
+}
+
+.featured-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+}
+
+.badge-security {
+  background: linear-gradient(135deg, var(--purple), #8b5cf6);
+  box-shadow: 0 4px 15px rgba(168, 139, 250, 0.4);
+}
+
+.badge-trading {
+  background: linear-gradient(135deg, var(--green), #10b981);
+  box-shadow: 0 4px 15px rgba(52, 211, 153, 0.4);
+}
+
+.featured-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.featured-subtitle {
+  color: var(--primary);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.featured-description {
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.featured-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.tech-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid;
+  transition: all 0.3s ease;
+}
+
+.tech-react {
+  background: rgba(97, 218, 251, 0.1);
+  border-color: #61dafb;
+  color: #61dafb;
+}
+
+.tech-electron {
+  background: rgba(150, 203, 235, 0.1);
+  border-color: #96cbeb;
+  color: #96cbeb;
+}
+
+.tech-crypto {
+  background: rgba(168, 139, 250, 0.1);
+  border-color: var(--purple);
+  color: var(--purple);
+}
+
+.tech-tailwind {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.tech-python {
+  background: rgba(55, 118, 171, 0.1);
+  border-color: #3776ab;
+  color: #ffd43b;
+}
+
+.tech-tkinter {
+  background: rgba(255, 212, 59, 0.1);
+  border-color: #ffd43b;
+  color: #ffd43b;
+}
+
+.tech-api {
+  background: rgba(52, 211, 153, 0.1);
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.tech-analytics {
+  background: rgba(244, 114, 182, 0.1);
+  border-color: var(--pink);
+  color: var(--pink);
+}
+
+.tech-badge:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}
+
+.featured-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+}
+
+.feature-item {
+  color: var(--text-light);
+  font-size: 0.9375rem;
+}
+
+.featured-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-featured {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--blue));
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.6);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-light);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 212, 59, 0.2);
+  color: var(--accent);
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 212, 59, 0.4);
+}
+
+/* =============================================
+   OTHER PROJECTS
+   ============================================= */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.project-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 12px 32px rgba(0, 212, 255, 0.3);
+}
+
+.project-card h3 {
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.project-card p {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+}
+
+.project-card a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.project-card a:hover {
+  color: var(--secondary);
+}
+
+/* =============================================
+   LIGHTHOUSE SECTION
+   ============================================= */
+.lighthouse-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.lighthouse-images img {
+  width: 100%;
+  border-radius: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.lighthouse-images img:hover {
+  transform: scale(1.02);
+  border-color: var(--accent);
+  box-shadow: 0 12px 48px rgba(255, 217, 61, 0.3);
+}
+
+/* =============================================
+   CONTACT SECTION
+   ============================================= */
+.contact-card {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 3rem;
+}
+
+.contact-card h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.contact-card p {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  font-size: 1.125rem;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.125rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 212, 255, 0.4);
+}
+
+.contact-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 48px rgba(0, 212, 255, 0.6);
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+.footer {
+  background: var(--darker-bg);
+  padding: 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer p {
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.footer-tagline {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+/* =============================================
+   PRIVACY MODAL
+   ============================================= */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 900px;
+  height: 90vh;
+  background: var(--dark-bg);
+  border-radius: 20px;
+  border: 2px solid rgba(0, 212, 255, 0.3);
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+  animation: slideUp 0.3s ease-out;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.privacy-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 20px;
+}
+
+/* =============================================
+   ANIMATIONS
+   ============================================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =============================================
+   RESPONSIVE DESIGN
+   ============================================= */
+@media (max-width: 768px) {
+  .nav-menu {
+    gap: 1rem;
+    font-size: 0.9375rem;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .hero-username {
+    font-size: 1.25rem;
+  }
+  
+  .featured-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .featured-features {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .lighthouse-images {
+    grid-template-columns: 1fr;
+  }
+  
+  .scores-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-container {
+    padding: 1rem;
+  }
+  
+  .nav-menu {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .profile-pic {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .featured-card {
+    padding: 1.5rem;
+  }
+  
+  .btn-featured {
+    width: 100%;
+    justify-content: center;
+  }
+}

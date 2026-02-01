@@ -560,6 +560,8 @@ body {
   gap: 1rem;
   flex-wrap: wrap;
   align-items: center;
+  position: relative;
+  z-index: 10;
 }
 
 .button {

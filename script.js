@@ -21,16 +21,20 @@ window.addEventListener('scroll', () => {
   previous = current;
 });
 
-const overlay = document.getElementById('overlay');
-
 function showPolicy() {
-  overlay.classList.add('active');
-  document.body.style.overflow = 'hidden';
+  const overlay = document.getElementById('overlay');
+  if (overlay) {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
 }
 
 function hidePolicy() {
-  overlay.classList.remove('active');
-  document.body.style.overflow = '';
+  const overlay = document.getElementById('overlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 }
 
 document.addEventListener('keydown', (e) => {

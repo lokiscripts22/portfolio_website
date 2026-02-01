@@ -1,178 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy | VaultNotes</title>
-  <meta name="description" content="Privacy Policy for VaultNotes - A privacy-first encrypted notes application" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaultNotes Privacy Policy</title>
+  <meta name="description" content="Privacy Policy for VaultNotes encrypted notes application">
+  <link rel="stylesheet" href="styles.css">
   <style>
-    .privacy-container {
+    body {
+      background: var(--navy);
+      padding: 0;
+      margin: 0;
+    }
+    
+    .document {
       max-width: 900px;
-      margin: 6rem auto 4rem;
+      margin: 4rem auto;
       padding: 3rem;
       background: white;
       border-radius: 16px;
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      color: var(--dark);
     }
     
-    .privacy-header {
-      border-bottom: 3px solid var(--primary-color);
+    .intro {
+      border-bottom: 3px solid var(--cyan);
       padding-bottom: 2rem;
       margin-bottom: 2rem;
     }
     
-    .privacy-container h1 {
-      color: var(--text-dark);
+    .document h1 {
+      color: var(--dark);
       font-size: 2.5rem;
       margin-bottom: 0.5rem;
     }
     
-    .last-updated {
-      color: var(--text-light);
+    .updated {
+      color: #64748b;
       font-style: italic;
       font-size: 0.9375rem;
     }
     
-    .app-notice {
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(16, 185, 129, 0.1));
-      border-left: 4px solid var(--primary-color);
+    .notice {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(52, 211, 153, 0.1));
+      border-left: 4px solid var(--cyan);
       padding: 1.25rem;
       margin: 2rem 0;
       border-radius: 8px;
     }
     
-    .app-notice p {
+    .notice p {
       margin: 0;
-      color: var(--text-dark);
+      color: var(--dark);
       font-weight: 600;
     }
     
-    .privacy-container h2 {
-      color: var(--primary-color);
+    .document h2 {
+      color: var(--cyan);
       margin-top: 3rem;
       margin-bottom: 1.25rem;
       font-size: 1.75rem;
       padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--border-color);
+      border-bottom: 2px solid #e2e8f0;
     }
     
-    .privacy-container h3 {
-      color: var(--text-dark);
+    .document h3 {
+      color: var(--dark);
       margin-top: 2rem;
       margin-bottom: 1rem;
       font-size: 1.25rem;
     }
     
-    .privacy-container p,
-    .privacy-container li {
+    .document p,
+    .document li {
       line-height: 1.8;
-      color: var(--text-light);
+      color: #64748b;
       margin-bottom: 1rem;
     }
     
-    .privacy-container ul {
+    .document ul {
       margin-left: 1.5rem;
       margin-bottom: 1.5rem;
     }
     
-    .privacy-container li {
+    .document li {
       margin-bottom: 0.75rem;
     }
     
-    .privacy-container strong {
-      color: var(--text-dark);
+    .document strong {
+      color: var(--dark);
       font-weight: 600;
     }
     
-    .summary-box {
-      background: var(--light-bg);
+    .summary {
+      background: #f8fafc;
       border-radius: 12px;
       padding: 2rem;
       margin: 2rem 0;
-      border: 2px solid var(--border-color);
+      border: 2px solid #e2e8f0;
     }
     
-    .summary-box h3 {
-      color: var(--primary-color);
+    .summary h3 {
+      color: var(--cyan);
       margin-top: 0;
       font-size: 1.375rem;
     }
     
-    .summary-box ul {
+    .summary ul {
       margin-bottom: 0;
     }
     
-    .summary-box li {
-      color: var(--text-dark);
+    .summary li {
+      color: var(--dark);
     }
     
-    .tech-specs {
-      background: rgba(37, 99, 235, 0.05);
+    .specs {
+      background: rgba(0, 212, 255, 0.05);
       padding: 1.5rem;
       border-radius: 8px;
       margin: 1.5rem 0;
     }
     
-    .tech-specs code {
-      background: rgba(37, 99, 235, 0.1);
+    .specs code {
+      background: rgba(0, 212, 255, 0.1);
       padding: 0.25rem 0.5rem;
       border-radius: 4px;
       font-family: 'Courier New', monospace;
       font-size: 0.875rem;
-      color: var(--primary-color);
+      color: var(--cyan);
     }
     
-    .back-link {
+    .return {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       margin-bottom: 2rem;
-      color: var(--primary-color);
+      color: var(--cyan);
       text-decoration: none;
       font-weight: 600;
-      transition: var(--transition);
+      transition: all 0.3s;
     }
     
-    .back-link:hover {
+    .return:hover {
       gap: 0.75rem;
-      color: var(--primary-dark);
+      color: #0ea5e9;
     }
     
-    .contact-section {
-      background: var(--light-bg);
+    .contact {
+      background: #f8fafc;
       padding: 2rem;
       border-radius: 12px;
       margin-top: 3rem;
       text-align: center;
     }
     
-    .contact-section p {
+    .contact p {
       margin-bottom: 1rem;
     }
     
-    .contact-section a {
-      color: var(--primary-color);
+    .contact a {
+      color: var(--cyan);
       font-weight: 600;
       text-decoration: none;
     }
     
-    .contact-section a:hover {
-      color: var(--primary-dark);
+    .contact a:hover {
+      color: #0ea5e9;
       text-decoration: underline;
     }
     
     @media (max-width: 768px) {
-      .privacy-container {
-        margin: 5rem 1rem 2rem;
+      .document {
+        margin: 3rem 1rem;
         padding: 2rem 1.5rem;
       }
       
-      .privacy-container h1 {
+      .document h1 {
         font-size: 2rem;
       }
       
-      .privacy-container h2 {
+      .document h2 {
         font-size: 1.5rem;
       }
     }
@@ -181,251 +188,224 @@
 
 <body>
 
-<!-- Navigation -->
-<nav class="navbar">
-  <div class="nav-container">
-    <a href="index.html" class="nav-logo">Khayne</a>
-    <ul class="nav-menu">
-      <li><a href="index.html#about" class="nav-link">About</a></li>
-      <li><a href="index.html#projects" class="nav-link">Projects</a></li>
-      <li><a href="index.html#skills" class="nav-link">Skills</a></li>
-      <li><a href="privacy.html" class="nav-link">Privacy Policy</a></li>
-    </ul>
-  </div>
-</nav>
-
-<div class="privacy-container">
-  <a href="index.html" class="back-link">
+<div class="document">
+  <a href="index.html" class="return">
     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
     </svg>
-    Back to Portfolio
+    Return to Portfolio
   </a>
   
-  <div class="privacy-header">
+  <div class="intro">
     <h1>VaultNotes Privacy Policy</h1>
-    <p class="last-updated">Last updated: January 31, 2026</p>
+    <p class="updated">Last updated: January 31, 2026</p>
   </div>
   
-  <div class="app-notice">
-    <p>This Privacy Policy applies to the VaultNotes application available on the Microsoft Store.</p>
+  <div class="notice">
+    <p>This policy applies to VaultNotes available on the Microsoft Store.</p>
   </div>
 
-  <div class="summary-box">
-    <h3>Privacy Summary (Plain English)</h3>
+  <div class="summary">
+    <h3>Overview</h3>
     <ul>
-      <li><strong>Zero data collection:</strong> VaultNotes does not collect, transmit, sell, or share your personal data</li>
-      <li><strong>Local-only storage:</strong> All notes, folders, and files are stored exclusively on your device</li>
-      <li><strong>Military-grade encryption:</strong> All content is encrypted using AES-256-GCM with PBKDF2 key derivation (310,000 iterations)</li>
-      <li><strong>No servers:</strong> VaultNotes has no cloud sync, no analytics, no tracking, and no external servers</li>
-      <li><strong>Complete control:</strong> Your PIN is never stored; encryption keys exist only in memory during use</li>
-      <li><strong>Clean uninstall:</strong> Uninstalling the app permanently removes all VaultNotes data</li>
+      <li><strong>No data collection:</strong> VaultNotes does not collect, transmit, sell, or share personal data</li>
+      <li><strong>Local storage:</strong> All content stays on your device only</li>
+      <li><strong>Military encryption:</strong> AES-256-GCM with PBKDF2 derivation (310,000 iterations)</li>
+      <li><strong>Zero servers:</strong> No cloud, analytics, or tracking</li>
+      <li><strong>User control:</strong> PIN never stored; keys exist in memory only during use</li>
+      <li><strong>Clean removal:</strong> Uninstalling removes all data permanently</li>
     </ul>
   </div>
 
-  <h2>1. Data We Process Locally</h2>
-  <p>VaultNotes does not collect personal data in the traditional sense. The app only processes the following information <strong>locally on your device</strong>:</p>
+  <h2>1. Local Data Processing</h2>
+  <p>VaultNotes processes information <strong>exclusively on your device</strong>:</p>
   <ul>
-    <li>Notes and note titles</li>
-    <li>Note content (text and optional file attachments such as images)</li>
-    <li>Folder structure and organizational metadata</li>
-    <li>App settings (theme, font size, high contrast mode, auto-lock timer, etc.)</li>
-    <li>Encrypted file attachments</li>
+    <li>Note titles and content</li>
+    <li>Text and file attachments (images, documents)</li>
+    <li>Folder organization</li>
+    <li>Application preferences (theme, font, auto-lock timing)</li>
   </ul>
-  <p>This data is:</p>
+  <p>This information is:</p>
   <ul>
     <li>Created by you</li>
-    <li>Stored only on your local device in encrypted form</li>
-    <li>Never transmitted outside the application</li>
-    <li>Never uploaded to any server or cloud service</li>
+    <li>Encrypted before storage</li>
+    <li>Never transmitted externally</li>
+    <li>Never uploaded to any server</li>
   </ul>
 
-  <h2>2. What We Do NOT Collect</h2>
+  <h2>2. Information Not Collected</h2>
   <p>VaultNotes does not collect:</p>
   <ul>
-    <li>Names, email addresses, phone numbers, or contact information</li>
-    <li>Location data or GPS coordinates</li>
-    <li>Device identifiers, IP addresses, or hardware information</li>
-    <li>Usage analytics, telemetry, or behavioral data</li>
-    <li>Crash reports sent to external servers</li>
-    <li>Advertising IDs or tracking cookies</li>
-    <li>Any personally identifiable information (PII)</li>
+    <li>Personal identifiers (name, email, phone)</li>
+    <li>Location or GPS data</li>
+    <li>Device identifiers or hardware info</li>
+    <li>Usage patterns or analytics</li>
+    <li>Crash reports to external servers</li>
+    <li>Advertising identifiers</li>
+    <li>Any personally identifiable information</li>
   </ul>
 
-  <h2>3. Encryption & Security Architecture</h2>
-  <p>VaultNotes implements military-grade cryptography following OWASP security guidelines and industry best practices:</p>
+  <h2>3. Security Architecture</h2>
+  <p>VaultNotes implements cryptography following OWASP guidelines:</p>
   
-  <div class="tech-specs">
-    <h3>Encryption Specifications</h3>
+  <div class="specs">
+    <h3>Technical Specifications</h3>
     <ul>
-      <li><strong>Algorithm:</strong> AES-256-GCM (Advanced Encryption Standard, 256-bit key, Galois/Counter Mode)</li>
+      <li><strong>Cipher:</strong> AES-256-GCM (Advanced Encryption Standard, 256-bit, Galois/Counter Mode)</li>
       <li><strong>Key Derivation:</strong> PBKDF2 (Password-Based Key Derivation Function 2)</li>
-      <li><strong>Iterations:</strong> 310,000 (exceeds OWASP 2023 recommendation)</li>
-      <li><strong>Hash Algorithm:</strong> SHA-256</li>
-      <li><strong>IV Length:</strong> 96 bits (12 bytes) - optimal for GCM mode</li>
-      <li><strong>Authentication Tag:</strong> 128 bits - detects tampering and corruption</li>
-      <li><strong>Salt Length:</strong> 128 bits (16 bytes) - cryptographically secure random generation</li>
+      <li><strong>Iterations:</strong> 310,000 (exceeds OWASP 2023 standards)</li>
+      <li><strong>Hash Function:</strong> SHA-256</li>
+      <li><strong>IV Size:</strong> 96 bits (optimal for GCM)</li>
+      <li><strong>Auth Tag:</strong> 128 bits (detects tampering)</li>
+      <li><strong>Salt Size:</strong> 128 bits (cryptographically random)</li>
     </ul>
   </div>
 
-  <h3>How Encryption Works</h3>
-  <p><strong>PIN to Encryption Key Process:</strong></p>
+  <h3>Encryption Process</h3>
+  <p><strong>PIN to Key Transformation:</strong></p>
   <ul>
-    <li>Your PIN is never stored in any form</li>
-    <li>When you enter your PIN, it undergoes PBKDF2 key derivation with 310,000 iterations</li>
-    <li>A cryptographically secure random salt is generated and stored (not secret, but unique per installation)</li>
-    <li>The encryption key is derived in memory and used only for the current session</li>
-    <li>Keys are cleared from memory when the app locks or closes</li>
+    <li>PIN is never saved anywhere</li>
+    <li>PBKDF2 derives encryption key with 310,000 iterations</li>
+    <li>Unique random salt generated per installation</li>
+    <li>Key exists in memory only during active session</li>
+    <li>Memory cleared when app locks or closes</li>
   </ul>
 
-  <p><strong>Data Encryption:</strong></p>
+  <p><strong>Content Encryption:</strong></p>
   <ul>
-    <li>All notes, folders, settings, and file attachments are encrypted before storage</li>
-    <li>Each encrypted item includes a unique initialization vector (IV)</li>
-    <li>Authentication tags verify data integrity and detect tampering</li>
-    <li>Encrypted data is stored in the Windows local application data directory</li>
+    <li>All notes, files, and settings encrypted before storage</li>
+    <li>Unique initialization vector per encrypted item</li>
+    <li>Authentication tags verify integrity</li>
+    <li>Storage in Windows local app data directory</li>
   </ul>
 
-  <p><strong>Security Guarantees:</strong></p>
+  <p><strong>Security Assurances:</strong></p>
   <ul>
-    <li>Without your PIN and physical access to your device, your data cannot be decrypted</li>
-    <li>Even the developer cannot access your encrypted data</li>
-    <li>Data tampering is detected through authentication tags</li>
-    <li>Memory is securely cleared after use to prevent data leakage</li>
+    <li>Decryption requires correct PIN and device access</li>
+    <li>Developer cannot access encrypted content</li>
+    <li>Tampering detected via authentication tags</li>
+    <li>Secure memory clearing prevents leakage</li>
   </ul>
 
-  <h2>4. Where Your Data Is Stored</h2>
-  <p>All data is stored locally on your device using the operating system's secure storage mechanisms:</p>
+  <h2>4. Storage Location</h2>
+  <p>Data resides locally using OS-secure storage:</p>
   <ul>
-    <li><strong>Windows:</strong> <code>%LOCALAPPDATA%\VaultNotes</code> directory</li>
-    <li><strong>Encryption:</strong> All stored content is encrypted using the methods described above</li>
-    <li><strong>No cloud storage:</strong> Data never leaves your device</li>
-    <li><strong>No third-party services:</strong> No external storage providers are used</li>
+    <li><strong>Windows:</strong> <code>%LOCALAPPDATA%\VaultNotes</code></li>
+    <li><strong>Format:</strong> Encrypted using methods above</li>
+    <li><strong>Cloud:</strong> None used</li>
+    <li><strong>Third-party:</strong> No external storage providers</li>
   </ul>
-  <p>VaultNotes does not upload, sync, or back up your data to any external location unless you explicitly export it using the export feature.</p>
+  <p>Data never leaves your device unless you explicitly export it.</p>
 
-  <h2>5. Network Access</h2>
-  <p>VaultNotes is a completely offline application. It does not:</p>
+  <h2>5. Network Activity</h2>
+  <p>VaultNotes is fully offline. It does not:</p>
   <ul>
-    <li>Communicate with external servers or APIs</li>
-    <li>Use cloud storage or synchronization services</li>
-    <li>Sync data across devices</li>
-    <li>Make background network requests</li>
-    <li>Connect to the internet for any reason during normal operation</li>
+    <li>Connect to external servers</li>
+    <li>Use cloud storage services</li>
+    <li>Sync across devices</li>
+    <li>Make background requests</li>
+    <li>Require internet connectivity</li>
   </ul>
-  <p>The application can be used entirely offline without any loss of functionality. No internet connection is required or used.</p>
+  <p>Application functions completely offline without limitations.</p>
 
-  <h2>6. File Attachments & Images</h2>
-  <p>When you add images or files to a note:</p>
+  <h2>6. File Attachments</h2>
+  <p>When adding files to notes:</p>
   <ul>
-    <li>File contents are converted to Base64 encoding for text processing</li>
-    <li>The encoded content is encrypted using the same AES-256-GCM system as notes</li>
-    <li>File metadata (name, type, size, last modified date) is encrypted and stored</li>
-    <li>Files are stored locally on your device in encrypted form</li>
-    <li>No files are uploaded, scanned, analyzed, or transmitted externally</li>
-    <li>No file content is sent to third-party services</li>
+    <li>Content converted to Base64 encoding</li>
+    <li>Encrypted using same AES-256-GCM system</li>
+    <li>Metadata (name, type, size) encrypted separately</li>
+    <li>Storage remains local on device</li>
+    <li>No upload, scan, or external analysis</li>
+    <li>No third-party file services involved</li>
   </ul>
 
-  <h2>7. Data Deletion & User Control</h2>
-  <p>You have complete control over your data:</p>
+  <h2>7. User Control & Deletion</h2>
+  <p>Complete control over your data:</p>
   <ul>
-    <li><strong>Deleting notes:</strong> Permanently removes them from local storage</li>
-    <li><strong>Deleting folders:</strong> Removes all contained notes and files</li>
-    <li><strong>Uninstalling the app:</strong> Permanently removes all VaultNotes data (configurable in installer)</li>
-    <li><strong>No recovery:</strong> Once data is deleted, there is no recovery mechanism</li>
-    <li><strong>No backups:</strong> VaultNotes does not maintain backups of your data</li>
+    <li><strong>Delete notes:</strong> Permanent removal from storage</li>
+    <li><strong>Delete folders:</strong> Removes all contents</li>
+    <li><strong>Uninstall app:</strong> Removes all VaultNotes data (installer option)</li>
+    <li><strong>No recovery:</strong> Deleted data cannot be restored</li>
+    <li><strong>No backups:</strong> Application doesn't maintain backups</li>
   </ul>
-  <p><strong>Important:</strong> VaultNotes cannot recover deleted data. Always export important notes before deletion if you want to keep them.</p>
+  <p><strong>Important:</strong> Export important notes before deletion if you want to preserve them.</p>
 
   <h2>8. Children's Privacy</h2>
-  <p>VaultNotes does not knowingly collect personal information from anyone, including children under 13 years of age.</p>
-  <p>Because no personal data is collected or transmitted by design, VaultNotes inherently complies with children's privacy regulations including COPPA (Children's Online Privacy Protection Act).</p>
+  <p>VaultNotes doesn't knowingly collect information from anyone, including minors.</p>
+  <p>Zero data collection design inherently complies with children's privacy laws including COPPA.</p>
 
-  <h2>9. Third-Party Access</h2>
+  <h2>9. Third-Party Involvement</h2>
   <p>VaultNotes does not:</p>
   <ul>
     <li>Share data with third parties</li>
-    <li>Integrate advertising SDKs or analytics platforms</li>
-    <li>Use tracking pixels or fingerprinting technologies</li>
-    <li>Employ any third-party services that could access your data</li>
+    <li>Use advertising or analytics SDKs</li>
+    <li>Employ tracking or fingerprinting</li>
+    <li>Integrate third-party services with data access</li>
     <li>Sell, rent, or trade user information</li>
   </ul>
-  <p><strong>No third party has access to your data. Period.</strong></p>
+  <p><strong>No third party can access your data.</strong></p>
 
-  <h3>Dependencies & Open Source Libraries</h3>
-  <p>VaultNotes uses the following open-source libraries for functionality (none of which collect or transmit data):</p>
+  <h3>Software Dependencies</h3>
+  <p>VaultNotes uses these open-source libraries (all process locally, no data transmission):</p>
   <ul>
-    <li><strong>React:</strong> User interface framework (local rendering only)</li>
-    <li><strong>Electron:</strong> Desktop application framework (local execution only)</li>
-    <li><strong>Lucide React:</strong> Icon library (local rendering)</li>
-    <li><strong>Marked:</strong> Markdown parsing (local processing)</li>
-    <li><strong>DOMPurify:</strong> HTML sanitization (local security)</li>
-    <li><strong>Tailwind CSS:</strong> Styling framework (local rendering)</li>
-  </ul>
-  <p>All libraries operate locally within the application and do not transmit data externally.</p>
-
-  <h2>10. Legal Basis (GDPR & Global Privacy Laws)</h2>
-  <p>Because VaultNotes does not collect or process personal data externally:</p>
-  <ul>
-    <li>No personal data is processed by the developer</li>
-    <li>No data controller or processor relationship exists</li>
-    <li>User data never leaves the user's device</li>
-    <li>All data remains under the sole control of the user</li>
-    <li>GDPR does not apply to local-only processing by the user</li>
-  </ul>
-  <p>VaultNotes complies with global privacy regulations including GDPR, CCPA, and LGPD by design through its zero-collection, local-only architecture.</p>
-
-  <h2>11. Security Measures</h2>
-  <p>Beyond encryption, VaultNotes implements additional security measures:</p>
-  <ul>
-    <li><strong>Auto-lock:</strong> Configurable automatic locking after inactivity</li>
-    <li><strong>Failed attempt tracking:</strong> Monitors and can lock out after multiple failed PIN attempts</li>
-    <li><strong>Session management:</strong> Secure session tokens (local only) for session persistence</li>
-    <li><strong>Memory security:</strong> Sensitive data is cleared from memory when no longer needed</li>
-    <li><strong>Constant-time comparison:</strong> PIN verification uses timing-attack-resistant comparison</li>
-    <li><strong>Input validation:</strong> All user input is validated and sanitized</li>
+    <li><strong>React:</strong> UI framework (local rendering)</li>
+    <li><strong>Electron:</strong> Desktop platform (local execution)</li>
+    <li><strong>Lucide React:</strong> Icons (local display)</li>
+    <li><strong>Marked:</strong> Markdown parser (local processing)</li>
+    <li><strong>DOMPurify:</strong> HTML sanitizer (local security)</li>
+    <li><strong>Tailwind CSS:</strong> Styles (local rendering)</li>
   </ul>
 
-  <h2>12. Changes to This Policy</h2>
-  <p>If VaultNotes changes how it handles data, this Privacy Policy will be updated accordingly. Any material changes will be:</p>
+  <h2>10. Legal Compliance</h2>
+  <p>Since VaultNotes doesn't process data externally:</p>
   <ul>
-    <li>Clearly disclosed in the updated policy</li>
-    <li>Noted with a new "Last Updated" date</li>
-    <li>Communicated through the Microsoft Store listing</li>
+    <li>Developer doesn't process personal data</li>
+    <li>No data controller/processor relationship</li>
+    <li>User data stays on user device</li>
+    <li>User maintains sole control</li>
+    <li>GDPR exemption for local-only processing</li>
   </ul>
-  <p>We are committed to maintaining VaultNotes as a privacy-first application. Any future features that might affect privacy will be opt-in and clearly communicated.</p>
+  <p>Design complies with GDPR, CCPA, LGPD through zero-collection architecture.</p>
 
-  <h2>13. Transparency & Open Source</h2>
-  <p>VaultNotes is designed with transparency in mind:</p>
+  <h2>11. Additional Security</h2>
+  <p>Beyond encryption, VaultNotes implements:</p>
   <ul>
-    <li>The encryption implementation is based on widely-audited Web Crypto API standards</li>
-    <li>Security practices follow OWASP guidelines</li>
-    <li>The application can be inspected using standard developer tools</li>
-    <li>This privacy policy accurately reflects the application's actual behavior</li>
+    <li><strong>Auto-lock:</strong> Configurable inactivity timeout</li>
+    <li><strong>Attempt tracking:</strong> Monitors failed PIN entries</li>
+    <li><strong>Session tokens:</strong> Secure local session management</li>
+    <li><strong>Memory clearing:</strong> Sensitive data removed when unused</li>
+    <li><strong>Timing protection:</strong> Constant-time PIN comparison</li>
+    <li><strong>Input validation:</strong> All input sanitized and validated</li>
   </ul>
 
-  <div class="contact-section">
+  <h2>12. Policy Updates</h2>
+  <p>If data handling changes, this policy will update to reflect it:</p>
+  <ul>
+    <li>Material changes clearly disclosed</li>
+    <li>New "Last Updated" date added</li>
+    <li>Notification via Microsoft Store listing</li>
+  </ul>
+  <p>Commitment to maintaining privacy-first design. Future features affecting privacy will be opt-in and transparent.</p>
+
+  <h2>13. Transparency</h2>
+  <p>VaultNotes prioritizes transparency:</p>
+  <ul>
+    <li>Encryption based on audited Web Crypto API standards</li>
+    <li>Security follows OWASP best practices</li>
+    <li>Application behavior can be inspected with dev tools</li>
+    <li>This policy accurately reflects actual application behavior</li>
+  </ul>
+
+  <div class="contact">
     <h3>Questions or Concerns?</h3>
-    <p>If you have questions about privacy or security, you may contact the developer through:</p>
-    <p>
-      <a href="https://github.com/lokiscripts22" target="_blank">GitHub: @lokiscripts22</a>
-    </p>
-    <p style="margin-top: 2rem; font-style: italic; color: var(--text-light);">
-      VaultNotes is designed so that even the developer cannot access your data.<br>
-      <strong style="color: var(--primary-color);">Privacy is not a feature — it is the foundation of this app.</strong>
+    <p>Contact the developer:</p>
+    <p><a href="https://github.com/lokiscripts22" target="_blank">GitHub: @lokiscripts22</a></p>
+    <p style="margin-top: 2rem; font-style: italic; color: #64748b;">
+      VaultNotes is designed so even the developer cannot access your data.<br>
+      <strong style="color: var(--cyan);">Privacy isn't a feature — it's the foundation.</strong>
     </p>
   </div>
 </div>
-
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-bottom">
-      <p>© 2026 Khayne | lokiscripts22. All rights reserved.</p>
-      <p class="footer-note">Built with care for privacy and security</p>
-    </div>
-  </div>
-</footer>
 
 </body>
 </html>

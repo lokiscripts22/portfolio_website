@@ -38,7 +38,8 @@ function hidePolicy() {
 }
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && overlay.classList.contains('active')) {
+  const overlay = document.getElementById('overlay');
+  if (e.key === 'Escape' && overlay && overlay.classList.contains('active')) {
     hidePolicy();
   }
 });

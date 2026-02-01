@@ -124,6 +124,20 @@ document.addEventListener('DOMContentLoaded', () => {
     part.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
     watcher.observe(part);
   });
+  
+  // Add click listener for privacy policy button
+  const privacyButtons = document.querySelectorAll('.button.outline');
+  privacyButtons.forEach(button => {
+    if (button.textContent.includes('Privacy Policy')) {
+      button.addEventListener('click', showPolicy);
+    }
+  });
+  
+  // Add click listeners for modal close
+  const closeButton = document.querySelector('.close');
+  const blanket = document.querySelector('.blanket');
+  if (closeButton) closeButton.addEventListener('click', hidePolicy);
+  if (blanket) blanket.addEventListener('click', hidePolicy);
 });
 
 if ('loading' in HTMLImageElement.prototype) {
